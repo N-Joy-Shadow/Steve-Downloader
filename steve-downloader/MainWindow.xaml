@@ -1,0 +1,146 @@
+﻿<Window x:Class="steve_downloader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:steve_downloader"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:control="clr-namespace:ProgressRingControl.Forms.Plugin;assembly=ProgressRing.Forms.Plugin"
+        xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" xmlns:cpb1="clr-namespace:CircularProgressBar;assembly=CircularProgressBar"
+        mc:Ignorable="d" Height="600" Width="1080" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+
+
+    <Window.Resources>
+        <Style x:Key="extend">
+            <Style.Triggers>
+            </Style.Triggers>
+
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="11*"/>
+        </Grid.RowDefinitions>
+        <!--상단바-->
+        <Grid x:Name="TopGrid" Grid.Column="1" Grid.ColumnSpan="3"  Background="BlueViolet" MouseDown="TopGrid_MouseDown">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="minize" HorizontalAlignment="Right" Width="50" Background="{x:Null}" BorderBrush="{x:Null}" Click="minize_Click">
+                    <materialDesign:PackIcon Kind="WindowMinimize"/>
+                </Button>
+                <Button x:Name="Quiet" HorizontalAlignment="Right" Width="50" Background="{x:Null}" Foreground="Red" BorderBrush="{x:Null}" Click="Quiet_Click">
+                    <materialDesign:PackIcon Kind="ExitToApp"/>
+                </Button>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left">
+                <TextBlock Text="Steve Installer" Foreground="Black" FontSize="40"/>
+            </StackPanel>
+        </Grid>
+        <!--사이드바-->
+        <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Margin="-210,0,0,0" Grid.RowSpan="2">
+
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="BlueViolet">
+                <Button x:Name="MenuCopenButton" Width="50" Height="50" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" Click="MenuCopenButton_Click">
+                    <materialDesign:PackIcon Kind="menu"/>
+                </Button>
+                <Button x:Name="MenuCloseButton" Visibility="Collapsed" Width="50" Height="50" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" Click="MenuCloseButton_Click">
+                    <materialDesign:PackIcon Kind="LocationExit"/>
+                </Button>
+                <TextBlock Text="Menu" HorizontalAlignment="Left" FontSize="40" Foreground="Black"/>
+            </Grid>
+            <Grid Grid.Row="1" HorizontalAlignment="Right">
+                <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20" Text="스티브갤러리로 이동  "/>
+                        <materialDesign:PackIcon Kind="Web" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="2" HorizontalAlignment="Right">
+                <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="완장에게 문의하기  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <materialDesign:PackIcon Kind="email" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="3" HorizontalAlignment="Right">
+                <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="패치 노트  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <materialDesign:PackIcon Kind="Notebook" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="4" HorizontalAlignment="Right">
+                <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="추가모드  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <materialDesign:PackIcon Kind="Wrench" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="5" HorizontalAlignment="Right">
+                <Button Background="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="위키  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <materialDesign:PackIcon Kind="Wikipedia" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Grid>
+        <!--메인-->
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0">
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="0" x:Name="CircularProgressBar">
+                <StackPanel>
+                    <ProgressBar Minimum="0" Maximum="100" Name="CPU_using"
+                     Width="15" Height="100" Margin="15"
+                     HorizontalAlignment="Left"
+                     Orientation="Vertical"/>   
+                    <Button Margin="15" Padding="15,3" HorizontalAlignment="Center" x:Name="test"
+                        Content="Start" Click="test_Click"/>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+
+
+    </Grid>
+</Window>
+
+    
