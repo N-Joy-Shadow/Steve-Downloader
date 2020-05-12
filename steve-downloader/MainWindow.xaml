@@ -10,40 +10,22 @@
         xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" xmlns:cpb1="clr-namespace:CircularProgressBar;assembly=CircularProgressBar"
         mc:Ignorable="d" Height="600" Width="1080" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
 
-    <Window.Resources>
-        <Style x:Key="test_grid" TargetType="Grid">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Grid.ColumnSpan" Value="2"/>
-                </Trigger>
-            </Style.Triggers>
-            
-            
-            
-        </Style>
-    </Window.Resources>
-
-
-
-
-
-
-
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="51*"/>
-            <ColumnDefinition Width="155*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="11*"/>
+            <RowDefinition Height="23*"/>
+            <RowDefinition Height="217*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
         </Grid.RowDefinitions>
         <!--상단바-->
-        <Grid x:Name="TopGrid" Grid.Column="1" Grid.ColumnSpan="2"  Background="BlueViolet" MouseDown="TopGrid_MouseDown">
+        <Grid x:Name="TopGrid"  Grid.ColumnSpan="3"  Background="BlueViolet" MouseDown="TopGrid_MouseDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="minize" HorizontalAlignment="Right" Width="50" Background="{x:Null}" BorderBrush="{x:Null}" Click="minize_Click">
+                <Button x:Name="minize" HorizontalAlignment="Right" Width="50" Background="{x:Null}" BorderBrush="{x:Null}" Click="minize_Click" >
                     <materialDesign:PackIcon Kind="WindowMinimize"/>
                 </Button>
                 <Button x:Name="Quiet" HorizontalAlignment="Right" Width="50" Background="{x:Null}" Foreground="Red" BorderBrush="{x:Null}" Click="Quiet_Click">
@@ -55,11 +37,7 @@
             </StackPanel>
         </Grid>
         <!--사이드바-->
-        <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2" Style="{StaticResource test_grid}">
-            
-            <Grid.Effect>
-                <DropShadowEffect ShadowDepth="1000"/>
-            </Grid.Effect>
+        <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.RowSpan="2">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -69,7 +47,6 @@
                 </TransformGroup>
             </Grid.RenderTransform>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
@@ -77,17 +54,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="BlueViolet">
-                <Button x:Name="MenuCopenButton" Width="50" Height="50" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Click="MenuCopenButton_Click">
-                    <materialDesign:PackIcon Kind="menu"/>
-                </Button>
-                <Button x:Name="MenuCloseButton" Visibility="Collapsed" Width="50" Height="50" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Click="MenuCloseButton_Click">
-                    <materialDesign:PackIcon Kind="LocationExit"/>
-                </Button>
-                <TextBlock x:Name="MenuTextVs" Text="Menu" HorizontalAlignment="Right" FontSize="40" Foreground="Black" Visibility="Collapsed"/>
-            </Grid>
-
-            <Grid Grid.Row="1" HorizontalAlignment="Left">
+            <Grid Grid.Row="0" HorizontalAlignment="Left">
                 <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Web" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
@@ -96,7 +63,7 @@
                     </StackPanel>
                 </Button>
             </Grid>
-            <Grid Grid.Row="2" HorizontalAlignment="Left">
+            <Grid Grid.Row="1" HorizontalAlignment="Left">
                 <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="email" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
@@ -104,7 +71,7 @@
                     </StackPanel>
                 </Button>
             </Grid>
-            <Grid Grid.Row="3" HorizontalAlignment="left">
+            <Grid Grid.Row="2" HorizontalAlignment="left">
                 <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Notebook" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
@@ -112,15 +79,15 @@
                     </StackPanel>
                 </Button>
             </Grid>
-            <Grid Grid.Row="4" HorizontalAlignment="Left">
-                <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
+            <Grid Grid.Row="3" HorizontalAlignment="Left">
+                <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand" Click="Button_Click">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Wrench" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock Text="추가모드  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
             </Grid>
-            <Grid Grid.Row="5" HorizontalAlignment="Left">
+            <Grid Grid.Row="4" HorizontalAlignment="Left">
                 <Button Background="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Wikipedia" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
@@ -130,34 +97,17 @@
             </Grid>
         </Grid>
         <!--메인-->
-        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" x:Name="CenterGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Grid.Column="0">
-            </Grid>
-            <Grid Grid.Row="0" Grid.Column="0">
-                <StackPanel>
-                    <ProgressBar Name="CPU_using"
-                     Width="60" Height="250" Margin="15"
-                     HorizontalAlignment="Left"
-                     Orientation="Vertical"/>
-                </StackPanel>
-            </Grid>
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CenterGrid">
+
             <Grid Grid.ColumnSpan="3" Grid.Row="2" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="9*"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="BlueViolet" Grid.RowSpan="2">
-                    <ProgressBar Height="30" HorizontalAlignment="Left" Width="820" Margin="20"/>
-                    <Button x:Name="Install_Start" FontSize="20" Width="150" Height="30" Click="Install_Start_Click">Install</Button>
+                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="BlueViolet">
+                    <ProgressBar Height="30" HorizontalAlignment="Left" Width="820" Margin="15">
+                    </ProgressBar>
+                    <Button x:Name="Install_Start" FontSize="20" Width="150" Height="30" Click="Install_Start_Click" Content="Install"/>
                 </StackPanel>
 
 

@@ -104,38 +104,15 @@ namespace steve_downloader
             this.WindowState = WindowState.Minimized;
         }
 
-        private void MenuCloseButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
 
-        private void MenuCopenButton_Click(object sender, RoutedEventArgs e)
-        {
-        }
         private void Window_ContentRendered(object sender, EventArgs e)
         {
 
         }
 
-        void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            for (int a = 1; a < 100; a++)
-            {
-                (sender as BackgroundWorker).ReportProgress(a);
-                Thread.Sleep(1);
-            }
-        }
 
-        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            CPU_using.Value = e.ProgressPercentage;
-        }
         private void test_Click(object sender, RoutedEventArgs e)
         {
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += worker_DoWork;
-            worker.ProgressChanged += worker_ProgressChanged;
-            worker.RunWorkerAsync();      
         }
 
         private void Window_ContentRendered_1(object sender, EventArgs e)
@@ -145,6 +122,11 @@ namespace steve_downloader
 
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
