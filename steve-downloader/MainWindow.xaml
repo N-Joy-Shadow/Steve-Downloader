@@ -10,27 +10,38 @@
         xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" xmlns:cpb1="clr-namespace:CircularProgressBar;assembly=CircularProgressBar"
         mc:Ignorable="d" Height="600" Width="1080" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
 
-
     <Window.Resources>
-        <Style x:Key="extend">
+        <Style x:Key="test_grid" TargetType="Grid">
             <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Grid.ColumnSpan" Value="2"/>
+                </Trigger>
             </Style.Triggers>
-
+            
+            
+            
         </Style>
-
     </Window.Resources>
+
+
+
+
+
+
+
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="51*"/>
+            <ColumnDefinition Width="155*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="11*"/>
         </Grid.RowDefinitions>
         <!--상단바-->
-        <Grid x:Name="TopGrid" Grid.Column="1" Grid.ColumnSpan="3"  Background="BlueViolet" MouseDown="TopGrid_MouseDown">
+        <Grid x:Name="TopGrid" Grid.Column="1" Grid.ColumnSpan="2"  Background="BlueViolet" MouseDown="TopGrid_MouseDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="minize" HorizontalAlignment="Right" Width="50" Background="{x:Null}" BorderBrush="{x:Null}" Click="minize_Click">
                     <materialDesign:PackIcon Kind="WindowMinimize"/>
@@ -44,8 +55,11 @@
             </StackPanel>
         </Grid>
         <!--사이드바-->
-        <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Margin="-210,0,0,0" Grid.RowSpan="2">
-
+        <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2" Style="{StaticResource test_grid}">
+            
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="1000"/>
+            </Grid.Effect>
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -64,57 +78,59 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="BlueViolet">
-                <Button x:Name="MenuCopenButton" Width="50" Height="50" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" Click="MenuCopenButton_Click">
+                <Button x:Name="MenuCopenButton" Width="50" Height="50" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Click="MenuCopenButton_Click">
                     <materialDesign:PackIcon Kind="menu"/>
                 </Button>
-                <Button x:Name="MenuCloseButton" Visibility="Collapsed" Width="50" Height="50" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" Click="MenuCloseButton_Click">
+                <Button x:Name="MenuCloseButton" Visibility="Collapsed" Width="50" Height="50" Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Click="MenuCloseButton_Click">
                     <materialDesign:PackIcon Kind="LocationExit"/>
                 </Button>
-                <TextBlock Text="Menu" HorizontalAlignment="Left" FontSize="40" Foreground="Black"/>
+                <TextBlock x:Name="MenuTextVs" Text="Menu" HorizontalAlignment="Right" FontSize="40" Foreground="Black" Visibility="Collapsed"/>
             </Grid>
-            <Grid Grid.Row="1" HorizontalAlignment="Right">
+
+            <Grid Grid.Row="1" HorizontalAlignment="Left">
                 <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Web" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20" Text="스티브갤러리로 이동  "/>
-                        <materialDesign:PackIcon Kind="Web" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+
                     </StackPanel>
                 </Button>
             </Grid>
-            <Grid Grid.Row="2" HorizontalAlignment="Right">
+            <Grid Grid.Row="2" HorizontalAlignment="Left">
                 <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="email" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock Text="완장에게 문의하기  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
-                        <materialDesign:PackIcon Kind="email" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                     </StackPanel>
                 </Button>
             </Grid>
-            <Grid Grid.Row="3" HorizontalAlignment="Right">
+            <Grid Grid.Row="3" HorizontalAlignment="left">
                 <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="패치 노트  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                         <materialDesign:PackIcon Kind="Notebook" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                        <TextBlock Text="패치 노트  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
             </Grid>
-            <Grid Grid.Row="4" HorizontalAlignment="Right">
+            <Grid Grid.Row="4" HorizontalAlignment="Left">
                 <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="추가모드  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                         <materialDesign:PackIcon Kind="Wrench" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                        <TextBlock Text="추가모드  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
             </Grid>
-            <Grid Grid.Row="5" HorizontalAlignment="Right">
+            <Grid Grid.Row="5" HorizontalAlignment="Left">
                 <Button Background="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="위키  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                         <materialDesign:PackIcon Kind="Wikipedia" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                        <TextBlock Text="위키  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
             </Grid>
         </Grid>
         <!--메인-->
-        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" x:Name="CenterGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="3*"/>
@@ -126,20 +142,27 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Grid.Column="0">
             </Grid>
-            <Grid Grid.Row="0" Grid.Column="0" x:Name="CircularProgressBar">
+            <Grid Grid.Row="0" Grid.Column="0">
                 <StackPanel>
-                    <ProgressBar Minimum="0" Maximum="100" Name="CPU_using"
-                     Width="15" Height="100" Margin="15"
+                    <ProgressBar Name="CPU_using"
+                     Width="60" Height="250" Margin="15"
                      HorizontalAlignment="Left"
-                     Orientation="Vertical"/>   
-                    <Button Margin="15" Padding="15,3" HorizontalAlignment="Center" x:Name="test"
-                        Content="Start" Click="test_Click"/>
+                     Orientation="Vertical"/>
                 </StackPanel>
+            </Grid>
+            <Grid Grid.ColumnSpan="3" Grid.Row="2" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="BlueViolet" Grid.RowSpan="2">
+                    <ProgressBar Height="30" HorizontalAlignment="Left" Width="820" Margin="20"/>
+                    <Button x:Name="Install_Start" FontSize="20" Width="150" Height="30" Click="Install_Start_Click">Install</Button>
+                </StackPanel>
+
 
             </Grid>
         </Grid>
-
-
     </Grid>
 </Window>
 

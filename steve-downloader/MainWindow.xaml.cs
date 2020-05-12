@@ -22,7 +22,8 @@ using System.Xml.Linq;
 using System.Windows.Markup;
 using System.Threading;
 using System.ComponentModel;
-using cpuUsing.cpusue;
+using System.Diagnostics;
+using System.Windows.Controls.Primitives;
 
 namespace steve_downloader
 {
@@ -35,7 +36,6 @@ namespace steve_downloader
         public MainWindow()
         {
             InitializeComponent();
-            i = 
         }
 
 
@@ -106,17 +106,10 @@ namespace steve_downloader
 
         private void MenuCloseButton_Click(object sender, RoutedEventArgs e)
         {
-            MenuCloseButton.Visibility = Visibility.Collapsed;
-            MenuCopenButton.Visibility = Visibility.Visible;
-            SideMenu.Margin = new Thickness(-210, 0, 0, 0);
-
         }
 
         private void MenuCopenButton_Click(object sender, RoutedEventArgs e)
         {
-            MenuCloseButton.Visibility = Visibility.Visible;
-            MenuCopenButton.Visibility = Visibility.Collapsed;
-            SideMenu.Margin = new Thickness(0, 0, 820, 0);
         }
         private void Window_ContentRendered(object sender, EventArgs e)
         {
@@ -125,9 +118,9 @@ namespace steve_downloader
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true)
+            for (int a = 1; a < 100; a++)
             {
-                (sender as BackgroundWorker).ReportProgress(i);
+                (sender as BackgroundWorker).ReportProgress(a);
                 Thread.Sleep(1);
             }
         }
@@ -136,19 +129,22 @@ namespace steve_downloader
         {
             CPU_using.Value = e.ProgressPercentage;
         }
-
         private void test_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Window_ContentRendered_1(object sender, EventArgs e)
         {
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
             worker.DoWork += worker_DoWork;
             worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerAsync();      
+        }
 
-            worker.RunWorkerAsync();
+        private void Window_ContentRendered_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Install_Start_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
