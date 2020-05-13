@@ -24,6 +24,8 @@ using System.Threading;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media.Effects;
+using MaterialDesignThemes.Wpf;
 
 namespace steve_downloader
 {
@@ -32,7 +34,7 @@ namespace steve_downloader
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        DropShadowEffect shadowEffect;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,54 +42,6 @@ namespace steve_downloader
 
 
 
-        //private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ButtonCloseMenu.Visibility = Visibility.Visible
-        //}
-        //private void ButtonCloseMenu_Click(object sender, RoutedEventArgs e)
-        //{
-        //    
-        //}
-        //private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    UserControl usc = null;
-        //    GridMain.Children.Clear();
-
-        //switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
-        //{
-        //    case "ItemHome":
-        //        usc = new UserControlHome();
-        //        GridMain.Children.Add(usc);
-        //        break;
-        //    case "ItemCreate":
-        //        usc = new UserControlCreate();
-        //        GridMain.Children.Add(usc);
-        //        break;
-        //    default:
-        //        break;
-        //
-
-        //private void mouseDrag_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (e.ChangedButton == MouseButton.Left)
-        //    {
-        //        this.DragMove();
-        //    }
-
-        //}
-
-        //private void ButtonOpen_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ButtonCloseMenu.Visibility = Visibility.Visible;
-        //    ButtonOpenMenu.Visibility = Visibility.Collapsed;
-        //}
-
-        //private void ButtonClose_Click(object sender, RoutedEventArgs e)
-        //{ 
-        //    ButtonCloseMenu.Visibility = Visibility.Collapsed;
-        //    ButtonOpenMenu.Visibility = Visibility.Visible;
-
-        //}
         private void TopGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
                 if (e.ChangedButton == MouseButton.Left)
@@ -122,11 +76,38 @@ namespace steve_downloader
 
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
+            second install_page = new second();
+            install_page.Show();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void SideMenu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            
+            this.shadowEffect = new DropShadowEffect
+            {
+                ShadowDepth = 1,
+                BlurRadius = 5
+            };
+            Grid.SetColumnSpan(SideMenu, 2);
+            SideMenu.Effect = this.shadowEffect;
+        }
+
+        private void SideMenu_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.shadowEffect = new DropShadowEffect
+            {
+                ShadowDepth = 0,
+                BlurRadius = 0
+            };
+            Grid.SetColumnSpan(SideMenu, 1);
+
+            SideMenu.Effect = this.shadowEffect;
         }
     }
 }

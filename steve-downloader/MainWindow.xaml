@@ -6,29 +6,29 @@
         xmlns:local="clr-namespace:steve_downloader"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:control="clr-namespace:ProgressRingControl.Forms.Plugin;assembly=ProgressRing.Forms.Plugin"
         xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" xmlns:cpb1="clr-namespace:CircularProgressBar;assembly=CircularProgressBar"
         mc:Ignorable="d" Height="600" Width="1080" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="150*"/>
+            <ColumnDefinition Width="55"/>
+            <ColumnDefinition Width="190"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="23*"/>
-            <RowDefinition Height="217*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="30*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="97*"/>
+            <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
         <!--상단바-->
         <Grid x:Name="TopGrid"  Grid.ColumnSpan="3"  Background="BlueViolet" MouseDown="TopGrid_MouseDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="minize" HorizontalAlignment="Right" Width="50" Background="{x:Null}" BorderBrush="{x:Null}" Click="minize_Click" >
+                <Button x:Name="minize" HorizontalAlignment="Right" Width="55" Background="{x:Null}" BorderBrush="{x:Null}" Click="minize_Click" >
                     <materialDesign:PackIcon Kind="WindowMinimize"/>
                 </Button>
-                <Button x:Name="Quiet" HorizontalAlignment="Right" Width="50" Background="{x:Null}" Foreground="Red" BorderBrush="{x:Null}" Click="Quiet_Click">
+                <Button x:Name="Quiet" HorizontalAlignment="Right" Width="55" Background="{x:Null}" Foreground="Red" BorderBrush="{x:Null}" Click="Quiet_Click">
                     <materialDesign:PackIcon Kind="ExitToApp"/>
                 </Button>
             </StackPanel>
@@ -37,7 +37,7 @@
             </StackPanel>
         </Grid>
         <!--사이드바-->
-        <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.RowSpan="2">
+        <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.ColumnSpan="1" MouseEnter="SideMenu_MouseEnter" MouseLeave="SideMenu_MouseLeave">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -59,7 +59,6 @@
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Web" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20" Text="스티브갤러리로 이동  "/>
-
                     </StackPanel>
                 </Button>
             </Grid>
@@ -97,20 +96,21 @@
             </Grid>
         </Grid>
         <!--메인-->
-        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CenterGrid">
-
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+            
+        </Grid>
+        <!--프로그래스바-->
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CenterGrid">
             <Grid Grid.ColumnSpan="3" Grid.Row="2" >
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="BlueViolet">
-                    <ProgressBar Height="30" HorizontalAlignment="Left" Width="820" Margin="15">
+                    <ProgressBar Height="30" HorizontalAlignment="Left" Width="860" Margin="15">
                     </ProgressBar>
                     <Button x:Name="Install_Start" FontSize="20" Width="150" Height="30" Click="Install_Start_Click" Content="Install"/>
                 </StackPanel>
-
-
             </Grid>
         </Grid>
     </Grid>

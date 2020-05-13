@@ -19,9 +19,9 @@ namespace steve_downloader
     /// <summary>
     /// UserControl1.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class second : Window
     {
-        public UserControl1()
+        public second()
         {
             InitializeComponent();
         }
