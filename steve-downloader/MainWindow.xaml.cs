@@ -26,6 +26,8 @@ using System.Diagnostics;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media.Effects;
 using MaterialDesignThemes.Wpf;
+using System.Management;
+using steve_downloader;
 
 namespace steve_downloader
 {
@@ -35,12 +37,17 @@ namespace steve_downloader
     public partial class MainWindow : Window
     {
         DropShadowEffect shadowEffect;
+        public static bool open_window = true;
         public MainWindow()
         {
             InitializeComponent();
         }
 
-
+        public void open_bool(bool bool_value)
+        {
+            open_window = bool_value;
+            return;
+        }
 
         private void TopGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -67,6 +74,7 @@ namespace steve_downloader
 
         private void test_Click(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void Window_ContentRendered_1(object sender, EventArgs e)
@@ -76,8 +84,19 @@ namespace steve_downloader
 
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
-            second install_page = new second();
-            install_page.Show();
+            if (open_window == true)
+            {
+                second install_page = new second();
+                install_page.Owner = Application.Current.MainWindow;
+                install_page.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                install_page.Show();
+                //open_window = false;
+            }
+            else
+            {
+                return;
+            }
+
 
         }
 
@@ -106,8 +125,13 @@ namespace steve_downloader
                 BlurRadius = 0
             };
             Grid.SetColumnSpan(SideMenu, 1);
-
             SideMenu.Effect = this.shadowEffect;
+        }
+
+        private void text2_Click(object sender, RoutedEventArgs e)
+        {
+            second sesds = new second();
+            Test_textblock.Text = sesds.select_path;
         }
     }
 }

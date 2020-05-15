@@ -7,12 +7,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using steve_downloader;
+using Xamarin.Forms.Xaml;
 
 namespace steve_downloader
 {
@@ -21,22 +24,40 @@ namespace steve_downloader
     /// </summary>
     public partial class second : Window
     {
+        public string select_path;
         public second()
         {
             InitializeComponent();
+            
         }
 
-        private void find_path_Click(object sender, RoutedEventArgs e)
+        public void find_path_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            CommonFileDialogResult result = dialog.ShowDialog();
-            paste_path.Text = Convert.ToString(result);
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.ShowDialog();
+            select_path = dialog.SelectedPath;
+            paste_path.Text = select_path;
         }
 
         private void CLosePopup_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+            this.Close();
+            MainWindow askdl = new MainWindow();
+            askdl.open_bool(false);
+            return;
+        }
+
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void download_ok_Click(object sender, RoutedEventArgs e)
+        {
+            string paste_text_return()
+            {
+                return (paste_path.Text);
+            }
         }
     }
 }

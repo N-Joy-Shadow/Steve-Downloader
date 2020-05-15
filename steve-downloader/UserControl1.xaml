@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:steve_downloader"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" d:DesignHeight="300" AllowsTransparency="True" Background="Transparent" 
-             d:DesignWidth="440" ResizeMode="NoResize" WindowStyle="None"  Height="300" Width="440">
+             mc:Ignorable="d" d:DesignHeight="400" AllowsTransparency="True" Background="Transparent" 
+             d:DesignWidth="540" ResizeMode="NoResize" WindowStyle="None"  Height="400" Width="540" ContentRendered="Window_ContentRendered">
 
     <Border Background="White" BorderBrush="Black" BorderThickness="1,1,1,1" CornerRadius="30,30,30,30">
         <Grid>
@@ -21,12 +21,12 @@
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="1" Grid.Column="1">
-                <StackPanel>
-                    <TextBlock FontSize="20"><Run Text="Select Your Path"/><LineBreak/><Run/></TextBlock>
-                    <TextBlock Text="경로 선택" FontSize="10" Foreground="Gray"/>
+                <StackPanel HorizontalAlignment="Left" Width="420">
+                    <TextBlock FontSize="40" Text="Select Your Path"/>
+                    <TextBlock Text="경로 선택" FontSize="20" Foreground="Gray"/>
                     <Grid Width="400" Height="40">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox IsReadOnly="True" x:Name="paste_path" Width="260" Height="20" Margin="5"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBox IsReadOnly="True" x:Name="paste_path" Width="320" Height="20" Margin="5"/>
                             <Button x:Name="find_path" Width="60" Height="20" Click="find_path_Click">...</Button>
                         </StackPanel>
                     </Grid>
@@ -36,7 +36,7 @@
                 </StackPanel>
                 <Grid Width="420" Height="20" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
-                        <Button Height="15" Width="50" Margin="2" FontSize="8">확인</Button>
+                        <Button Height="15" Width="50" Margin="2" FontSize="8" x:Name="download_ok"  Click="download_ok_Click">확인</Button>
                         <Button x:Name="CLosePopup" Height="15" Width="50" Margin="2" FontSize="8" Click="CLosePopup_Click">닫기</Button>
                     </StackPanel>
                 </Grid>
