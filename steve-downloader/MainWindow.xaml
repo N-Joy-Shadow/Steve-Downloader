@@ -98,7 +98,7 @@
         <!--메인-->
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
             <TextBlock Text="노무현" x:Name="Test_textblock" FontSize="50" Foreground="Black"/>
-            <Button x:Name="text2" Width="50" Click="text2_Click">2</Button>
+            <Button x:Name="text2" Width="100" Height="50" Click="text2_Click">2</Button>
         </Grid>
         <!--프로그래스바-->
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CenterGrid">

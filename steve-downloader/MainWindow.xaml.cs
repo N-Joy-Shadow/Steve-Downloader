@@ -27,7 +27,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media.Effects;
 using MaterialDesignThemes.Wpf;
 using System.Management;
-using steve_downloader;
+using steve_downloader.second_window;
 
 namespace steve_downloader
 {
@@ -42,10 +42,9 @@ namespace steve_downloader
         {
             InitializeComponent();
         }
-
-        public void open_bool(bool bool_value)
+        public void open_bool()
         {
-            open_window = bool_value;
+            open_window = true;
             return;
         }
 
@@ -90,7 +89,7 @@ namespace steve_downloader
                 install_page.Owner = Application.Current.MainWindow;
                 install_page.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 install_page.Show();
-                //open_window = false;
+                open_window = false;
             }
             else
             {
@@ -110,8 +109,8 @@ namespace steve_downloader
             
             this.shadowEffect = new DropShadowEffect
             {
-                ShadowDepth = 1,
-                BlurRadius = 5
+                ShadowDepth = 2,
+                BlurRadius = 6
             };
             Grid.SetColumnSpan(SideMenu, 2);
             SideMenu.Effect = this.shadowEffect;

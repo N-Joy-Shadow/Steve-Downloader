@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using steve_downloader;
 using Xamarin.Forms.Xaml;
 
-namespace steve_downloader
+namespace steve_downloader.second_window
 {
     /// <summary>
     /// UserControl1.xaml에 대한 상호 작용 논리
@@ -25,6 +26,8 @@ namespace steve_downloader
     public partial class second : Window
     {
         public string select_path;
+        public bool set_download_start;
+        MainWindow askdl = new MainWindow();
         public second()
         {
             InitializeComponent();
@@ -42,9 +45,7 @@ namespace steve_downloader
         private void CLosePopup_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            MainWindow askdl = new MainWindow();
-            askdl.open_bool(false);
-            return;
+            askdl.open_bool();
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -54,9 +55,16 @@ namespace steve_downloader
 
         private void download_ok_Click(object sender, RoutedEventArgs e)
         {
-            string paste_text_return()
+            if (select_path == paste_path.Text)
             {
-                return (paste_path.Text);
+                this.Close();
+                askdl.open_bool();
+                set_download_start = true;
+            }
+            else
+            {
+                this.Close();
+                askdl.open_bool();
             }
         }
     }
