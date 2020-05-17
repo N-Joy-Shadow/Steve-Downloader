@@ -16,7 +16,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using steve_downloader;
+using steve_downloader.download;
 using Xamarin.Forms.Xaml;
+using System.Threading;
+using System.Net;
 
 namespace steve_downloader.second_window
 {
@@ -25,8 +28,10 @@ namespace steve_downloader.second_window
     /// </summary>
     public partial class second : Window
     {
-        public string select_path;
+        public static string select_path;
         public bool set_download_start;
+        public static Uri korean_link = new Uri("http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar");
+        public static string donwloadpath = second.select_path + "\\koreanchat-creo-1.12-1.9.jar";
         MainWindow askdl = new MainWindow();
         public second()
         {
@@ -40,6 +45,7 @@ namespace steve_downloader.second_window
             dialog.ShowDialog();
             select_path = dialog.SelectedPath;
             paste_path.Text = select_path;
+            return;
         }
 
         private void CLosePopup_Click(object sender, RoutedEventArgs e)
@@ -50,21 +56,33 @@ namespace steve_downloader.second_window
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            
+            try
+            {
+                var F_th = new Thread(F_Thread);
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("성공");
+            }
         }
 
         private void download_ok_Click(object sender, RoutedEventArgs e)
         {
-            if (select_path == paste_path.Text)
-            {
                 this.Close();
                 askdl.open_bool();
                 set_download_start = true;
-            }
-            else
+        }
+        private void F_Thread()
+        {
+            while (true)
             {
-                this.Close();
-                askdl.open_bool();
+                if (set_download_start == true)
+                {
+                    using (WebClient client = new WebClient())
+                    {
+                     client.DownloadDataAsync(korean_link, donwloadpath);
+                    }
+                }
             }
         }
     }

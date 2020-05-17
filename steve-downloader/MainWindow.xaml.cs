@@ -28,6 +28,7 @@ using System.Windows.Media.Effects;
 using MaterialDesignThemes.Wpf;
 using System.Management;
 using steve_downloader.second_window;
+using steve_downloader.download;
 
 namespace steve_downloader
 {
@@ -78,7 +79,7 @@ namespace steve_downloader
 
         private void Window_ContentRendered_1(object sender, EventArgs e)
         {
-
+            
         }
 
         private void Install_Start_Click(object sender, RoutedEventArgs e)
@@ -101,7 +102,7 @@ namespace steve_downloader
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            Download asg = new Download();
         }
 
         private void SideMenu_MouseEnter(object sender, MouseEventArgs e)
@@ -130,7 +131,7 @@ namespace steve_downloader
         private void text2_Click(object sender, RoutedEventArgs e)
         {
             second sesds = new second();
-            Test_textblock.Text = sesds.select_path;
+            Test_textblock.Text = steve_downloader.second_window.second.select_path;
         }
     }
 }

@@ -36,6 +36,11 @@
                 <TextBlock Text="Steve Installer" Foreground="Black" FontSize="40"/>
             </StackPanel>
         </Grid>
+        <!--메인-->
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+            <TextBlock Text="노무현" x:Name="Test_textblock"  FontSize="50" Foreground="Black"/>
+            <Button x:Name="text2" Width="100" Height="50" Click="text2_Click">2</Button>
+        </Grid>
         <!--사이드바-->
         <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.ColumnSpan="1" MouseEnter="SideMenu_MouseEnter" MouseLeave="SideMenu_MouseLeave">
             <Grid.RenderTransform>
@@ -63,7 +68,7 @@
                 </Button>
             </Grid>
             <Grid Grid.Row="1" HorizontalAlignment="Left">
-                <Button Background="{x:Null}"  BorderBrush="{x:Null}" Cursor="Hand">
+                <Button Background="{x:Null}"   BorderBrush="{x:Null}" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="email" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock Text="완장에게 문의하기  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
@@ -88,17 +93,12 @@
             </Grid>
             <Grid Grid.Row="4" HorizontalAlignment="Left">
                 <Button Background="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand"  >
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="Wikipedia" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
-                    <TextBlock Text="위키  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
-                </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Wikipedia" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                        <TextBlock Text="위키  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                    </StackPanel>
                 </Button>
             </Grid>
-        </Grid>
-        <!--메인-->
-        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
-            <TextBlock Text="노무현" x:Name="Test_textblock" FontSize="50" Foreground="Black"/>
-            <Button x:Name="text2" Width="100" Height="50" Click="text2_Click">2</Button>
         </Grid>
         <!--프로그래스바-->
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CenterGrid">

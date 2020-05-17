@@ -36,7 +36,7 @@
                 </StackPanel>
                 <Grid Width="500" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
-                        <Button Height="20" Width="60" Margin="4" FontSize="8" x:Name="download_ok"  Click="download_ok_Click">확인</Button>
+                        <Button x:Name="download_ok" Height="20" Width="60" Margin="4" FontSize="8" Click="download_ok_Click">확인</Button>
                         <Button x:Name="CLosePopup" Height="20" Width="60" Margin="2" FontSize="8" Click="CLosePopup_Click">닫기</Button>
                     </StackPanel>
                 </Grid>
