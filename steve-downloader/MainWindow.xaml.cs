@@ -29,6 +29,8 @@ using MaterialDesignThemes.Wpf;
 using System.Management;
 using steve_downloader.second_window;
 using steve_downloader.download;
+using System.Management;
+using System.Windows.Threading;
 
 namespace steve_downloader
 {
@@ -49,6 +51,17 @@ namespace steve_downloader
             return;
         }
 
+        static string SizeSuffix(Int64 value)
+        {
+            if (value < 0) { return "-" + SizeSuffix(-value); }
+            if (value == 0) { return "0.0 bytes"; }
+
+            int mag = (int)Math.Log(value, 1024);
+            decimal adjustedSize = (decimal)value / (1L << (mag * 10));
+
+            return string.Format("{0:n1} {1}", adjustedSize, SizeSuffixes[mag]);
+        }
+
         private void TopGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
                 if (e.ChangedButton == MouseButton.Left)
@@ -65,23 +78,6 @@ namespace steve_downloader
             this.WindowState = WindowState.Minimized;
         }
 
-
-        private void Window_ContentRendered(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void test_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Window_ContentRendered_1(object sender, EventArgs e)
-        {
-            
-        }
-
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
             if (open_window == true)
@@ -89,8 +85,8 @@ namespace steve_downloader
                 second install_page = new second();
                 install_page.Owner = Application.Current.MainWindow;
                 install_page.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                install_page.Show();
                 open_window = false;
+                install_page.Show();
             }
             else
             {
@@ -127,11 +123,43 @@ namespace steve_downloader
             Grid.SetColumnSpan(SideMenu, 1);
             SideMenu.Effect = this.shadowEffect;
         }
-
-        private void text2_Click(object sender, RoutedEventArgs e)
+        private void get_system_information()
         {
-            second sesds = new second();
-            Test_textblock.Text = steve_downloader.second_window.second.select_path;
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+            {
+                ManagementObjectSearcher myVideoObject = new ManagementObjectSearcher("select * from Win32_VideoController");
+                foreach (ManagementObject obj in myVideoObject.Get())
+                {
+                    text_vga.Text = ": " + obj["Name"];
+                }
+
+                ManagementObjectSearcher myProcessorObject = new ManagementObjectSearcher("select * from Win32_Processor");
+                foreach (ManagementObject obj in myProcessorObject.Get())
+                {
+                    text_cpu.Text = ": " + obj["Name"];
+                }
+
+                ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
+                ManagementObjectCollection results = searcher.Get();
+                foreach (ManagementObject result in results)
+                {
+                    text_rem.Text = ": " + SizeSuffix((long)Convert.ToDouble(result["TotalVisibleMemorySize"]));
+                }
+
+            }));
         }
+ 
+
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            Thread t = new Thread(new ThreadStart(get_system_information));
+            t.Start();
+        }
+
+        static readonly string[] SizeSuffixes = {"KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+
+
+
     }
 }

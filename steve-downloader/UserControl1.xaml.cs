@@ -23,9 +23,6 @@ using System.Net;
 
 namespace steve_downloader.second_window
 {
-    /// <summary>
-    /// UserControl1.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class second : Window
     {
         public static string select_path;

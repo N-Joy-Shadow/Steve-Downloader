@@ -9,7 +9,7 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:control="clr-namespace:ProgressRingControl.Forms.Plugin;assembly=ProgressRing.Forms.Plugin"
         xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" xmlns:cpb1="clr-namespace:CircularProgressBar;assembly=CircularProgressBar"
-        mc:Ignorable="d" Height="600" Width="1080" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        mc:Ignorable="d" Height="600" Width="1080" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" ContentRendered="Window_ContentRendered">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,7 +23,7 @@
             <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
         <!--상단바-->
-        <Grid x:Name="TopGrid"  Grid.ColumnSpan="3"  Background="BlueViolet" MouseDown="TopGrid_MouseDown">
+        <Grid x:Name="TopGrid"  Grid.ColumnSpan="3"  Background="#FF4A56A8" MouseDown="TopGrid_MouseDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="minize" HorizontalAlignment="Right" Width="55" Background="{x:Null}" BorderBrush="{x:Null}" Click="minize_Click" >
                     <materialDesign:PackIcon Kind="WindowMinimize"/>
@@ -38,8 +38,44 @@
         </Grid>
         <!--메인-->
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
-            <TextBlock Text="노무현" x:Name="Test_textblock"  FontSize="50" Foreground="Black"/>
-            <Button x:Name="text2" Width="100" Height="50" Click="text2_Click">2</Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Margin="15" Background="#FFD5D5D5">
+                    <TextBlock Text="-공지-" Foreground="black" FontSize="50"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1" Margin="15" Background="#FFD5D5D5">
+                    <Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="성능 정보" FontSize="40" Margin="5" Foreground="Black"/>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Cpu64Bit" Width="40" Height="40" Margin="5" Foreground="Black"/>
+                            <TextBlock x:Name="text_cpu" Text="CPU 로딩중.." FontSize="20" VerticalAlignment="Center" Foreground="black"/>
+                        </StackPanel>                        
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="GraphicsProcessingUnit" Width="40" Height="40" Margin="5" Foreground="Black"/>
+                            <TextBlock x:Name="text_vga" Text="VGA 로딩중.." FontSize="20" VerticalAlignment="Center" Foreground="black"/>
+                        </StackPanel>                        
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Memory" Width="40" Height="40" Margin="5" Foreground="Black"/>
+                            <TextBlock x:Name="text_rem" Text="REM 로딩중.." FontSize="20" VerticalAlignment="Center" Foreground="black"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
         </Grid>
         <!--사이드바-->
         <Grid x:Name="SideMenu" Background="LightGray" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Grid.ColumnSpan="1" MouseEnter="SideMenu_MouseEnter" MouseLeave="SideMenu_MouseLeave">
@@ -100,14 +136,14 @@
                 </Button>
             </Grid>
         </Grid>
-        <!--프로그래스바-->
+        <!--ProgressBar-->
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CenterGrid">
             <Grid Grid.ColumnSpan="3" Grid.Row="2" >
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="BlueViolet">
+                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FF4A56A8">
                     <ProgressBar Height="30" HorizontalAlignment="Left" Width="860" Margin="15">
                     </ProgressBar>
                     <Button x:Name="Install_Start" FontSize="20" Width="150" Height="30" Click="Install_Start_Click" Content="Install"/>
