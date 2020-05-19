@@ -1,36 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using MaterialDesignThemes;
-using MaterialDesignColors;
-using System.Windows.Media.Animation;
-using Syncfusion.UI.Xaml.ProgressBar;
-using MetroFramework;
-using System.Collections.ObjectModel;
-using System.Xml.Linq;
-using System.Windows.Markup;
 using System.Threading;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media.Effects;
-using MaterialDesignThemes.Wpf;
 using System.Management;
 using steve_downloader.second_window;
 using steve_downloader.download;
-using System.Management;
 using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace steve_downloader
 {
@@ -41,15 +19,18 @@ namespace steve_downloader
     {
         DropShadowEffect shadowEffect;
         public static bool open_window = true;
+        public static bool open_window_visiable = true;
         public MainWindow()
         {
             InitializeComponent();
         }
         public void open_bool()
         {
-            open_window = true;
+            open_window_visiable = true;
             return;
-        }
+        }      
+        //  byte -> GB
+        static readonly string[] SizeSuffixes = { "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
         static string SizeSuffix(Int64 value)
         {
@@ -60,6 +41,14 @@ namespace steve_downloader
             decimal adjustedSize = (decimal)value / (1L << (mag * 10));
 
             return string.Format("{0:n1} {1}", adjustedSize, SizeSuffixes[mag]);
+        }       
+        static string SizeSuffixMb(Int64 value)
+        {
+            if (value < 0) { return "-" + SizeSuffixMb(-value); }
+            if (value == 0) { return "0.0 bytes"; }
+            int mag = (int)Math.Log(value, 1024);
+            decimal adjustedSize = (decimal)value / (1L << (mag * 10));
+            return string.Format("{0}", Math.Round(adjustedSize * 1024));
         }
 
         private void TopGrid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -80,20 +69,22 @@ namespace steve_downloader
 
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
-            if (open_window == true)
+            second install_page = new second();
+            install_page.Owner = Application.Current.MainWindow;
+            install_page.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            if (open_window == false)
             {
-                second install_page = new second();
-                install_page.Owner = Application.Current.MainWindow;
-                install_page.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                open_window = false;
-                install_page.Show();
+                if (open_window_visiable == true)
+                {
+                    open_window_visiable = false;
+                    install_page.Visibility = Visibility.Visible;
+                }
             }
             else
             {
-                return;
+                open_window = false;
+                install_page.Show();
             }
-
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -125,27 +116,40 @@ namespace steve_downloader
         }
         private void get_system_information()
         {
-            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+            Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(delegate
             {
+                //CPU
                 ManagementObjectSearcher myVideoObject = new ManagementObjectSearcher("select * from Win32_VideoController");
                 foreach (ManagementObject obj in myVideoObject.Get())
                 {
                     text_vga.Text = ": " + obj["Name"];
                 }
-
+                //VGA
                 ManagementObjectSearcher myProcessorObject = new ManagementObjectSearcher("select * from Win32_Processor");
                 foreach (ManagementObject obj in myProcessorObject.Get())
                 {
                     text_cpu.Text = ": " + obj["Name"];
                 }
-
+                //Ram
                 ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
                 ManagementObjectCollection results = searcher.Get();
                 foreach (ManagementObject result in results)
                 {
-                    text_rem.Text = ": " + SizeSuffix((long)Convert.ToDouble(result["TotalVisibleMemorySize"]));
+                    text_ram.Text = ": " + SizeSuffix((long)Convert.ToDouble(result["TotalVisibleMemorySize"]));
+                    ram_rate.Text = "400000 / " + SizeSuffixMb((long)Convert.ToDouble(result["TotalVisibleMemorySize"]));
                 }
+                //java information
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = "java.exe";
+                psi.Arguments = " -version";
+                psi.RedirectStandardError = true;
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+               
+                Process pr = Process.Start(psi);
+                string strOutput = pr.StandardError.ReadLine().Split(' ')[2].Replace("\"", "");
+                java_version.Text = strOutput;
 
             }));
         }
@@ -156,10 +160,10 @@ namespace steve_downloader
             Thread t = new Thread(new ThreadStart(get_system_information));
             t.Start();
         }
-
-        static readonly string[] SizeSuffixes = {"KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-
-
-
+        //스티브 갤러기 열기
+        private void Direct_visit_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://gall.dcinside.com/mgallery/board/lists/?id=steve&page=1");
+        }
     }
 }

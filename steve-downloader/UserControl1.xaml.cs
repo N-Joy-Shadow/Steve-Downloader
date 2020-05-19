@@ -26,7 +26,7 @@ namespace steve_downloader.second_window
     public partial class second : Window
     {
         public static string select_path;
-        public bool set_download_start;
+        public bool set_download_start = false;
         public static Uri korean_link = new Uri("http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar");
         public static string donwloadpath = second.select_path + "\\koreanchat-creo-1.12-1.9.jar";
         MainWindow askdl = new MainWindow();
@@ -47,7 +47,7 @@ namespace steve_downloader.second_window
 
         private void CLosePopup_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.Visibility = Visibility.Collapsed;
             askdl.open_bool();
         }
 
@@ -65,21 +65,18 @@ namespace steve_downloader.second_window
 
         private void download_ok_Click(object sender, RoutedEventArgs e)
         {
-                this.Close();
-                askdl.open_bool();
-                set_download_start = true;
+            this.Visibility = Visibility.Collapsed;
+            askdl.open_bool();
+            set_download_start = true;
         }
         private void F_Thread()
         {
-            while (true)
+            while (set_download_start == true)
             {
-                if (set_download_start == true)
-                {
                     using (WebClient client = new WebClient())
                     {
                      client.DownloadDataAsync(korean_link, donwloadpath);
                     }
-                }
             }
         }
     }
