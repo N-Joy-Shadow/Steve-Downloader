@@ -31,7 +31,7 @@
                     <materialDesign:PackIcon Kind="WindowMinimize"/>
                 </Button>
                 <Button x:Name="Quiet" HorizontalAlignment="Right" Width="55" Background="#FF4A56A8" Foreground="Red" BorderBrush="{x:Null}" Click="Quiet_Click">
-                    <materialDesign:PackIcon Kind="ExitToApp"/>
+                    <materialDesign:PackIcon Kind="Xamarin"/>
                 </Button>
             </StackPanel>
             <StackPanel HorizontalAlignment="Left">
@@ -50,7 +50,7 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" Margin="15,15,15,0" Background="#FFD5D5D5">
-                    <TextBlock Text="-공지-" Foreground="black" FontSize="50"/>
+                    <TextBlock Text=" 공지" Foreground="black" FontSize="50"/>
                 </Grid>
                 <Grid Grid.Column="1" Margin="15,15,15,0" Background="#FFD5D5D5">
                     <Grid.ColumnDefinitions>
@@ -58,18 +58,22 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="1" Margin="10">
-                        <Slider  Value="0" Minimum="0" Maximum="1024" Orientation="Vertical" Foreground="#FF4A56A8" HorizontalAlignment="Center" BorderBrush="#00000000"/>
+                        <Slider  x:Name="ram_slider" TickFrequency="128" TickPlacement="TopLeft"  Value="512" Minimum="0" Maximum="1024" Orientation="Vertical"
+                                 Foreground="#FF4A56A8" HorizontalAlignment="Center" BorderBrush="#00000000" ValueChanged="ram_slider_ValueChanged"/>
                     </Grid>
                     <Grid Grid.Column="0">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Memory" Width="60" Height="60" Foreground="Black"/>
+                                <materialDesign:PackIcon  Kind="Memory" Width="60" Height="60" Foreground="Black"/>
                                 <TextBlock Text="램 설정" FontSize="30" Foreground="Black" VerticalAlignment="Center"/>
                             </StackPanel>
                             <TextBlock Text="- 권장: 8192MB(8GB)" Margin="5" Foreground="Gray" FontSize="15"/>
                             <TextBlock Text="- 최소: 4096MB(4GB)" Margin="5" Foreground="Gray" FontSize="15"/>
-                            <TextBlock x:Name="ram_rate" Text="0000 / 0000"  Margin="0,40,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
-                            <TextBlock Text="MB" FontSize="10" Foreground="Black" HorizontalAlignment="Center"/> 
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock x:Name="ram_rate" Text="0000 / "  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
+                                <TextBlock Name="ram_trans" Text="{Binding Path=Value, StringFormat=#, ElementName=ram_slider}"  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
+                            </StackPanel>
+                                <TextBlock Text="MB" FontSize="14" Foreground="Black" HorizontalAlignment="Center"/>   
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -79,10 +83,45 @@
                     <ColumnDefinition Width="6*"/>
                     <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="2">
-
-
-
+                <Grid Grid.Column="2" Margin="0,15,15,15" Background="#FFD5D5D5">
+                    <StackPanel>
+                        <Grid Margin="15,15,15,0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Cpu64Bit" Width="30" Height="30" Foreground="Black"/>
+                                <TextBlock   Text="CPU Using" VerticalAlignment="Center" FontSize="14" Foreground="Black"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Margin="15" Height="40">
+                            <ProgressBar
+                                x:Name="cpu_progressbar"
+                                Value="0"
+                                Maximum="100"
+                                Minimum="0"
+                                Foreground="Aqua"
+                                Background="#FF4A56A8"
+                                />
+                            <TextBlock x:Name="cpu_using" Text=" 0%" VerticalAlignment="Center" FontSize="26" Foreground="Black"/>
+                        </Grid>
+                        <Grid Margin="15,0,15,0">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Memory" Width="30" Height="30" Foreground="Black"/>
+                                <TextBlock  Text="Ram Using" VerticalAlignment="Center" FontSize="14" Foreground="Black"/>
+                            </StackPanel>
+                            
+                        </Grid>
+                        <TextBlock Margin="15,0" x:Name="ram_rate_mb" Foreground="Gray"/>
+                        <Grid Margin="15,0,15,15" Height="40">
+                            <ProgressBar
+                                x:Name="ram_progressbar"
+                                Value="0"
+                                Maximum="100"
+                                Minimum="0"
+                                Foreground="Aqua" Background="#FF4A56A8"
+                                
+                                />
+                            <TextBlock x:Name="ram_using" Text=" 0%" VerticalAlignment="Center" FontSize="26" Foreground="Black"/>
+                        </Grid>
+                    </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1" Margin="15" Background="#FFD5D5D5">
                     <Grid.ColumnDefinitions>

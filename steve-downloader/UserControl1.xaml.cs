@@ -65,9 +65,12 @@ namespace steve_downloader.second_window
 
         private void download_ok_Click(object sender, RoutedEventArgs e)
         {
+            if (paste_path.Text != "")
+            { 
             this.Visibility = Visibility.Collapsed;
             askdl.open_bool();
             set_download_start = true;
+            }
         }
         private void F_Thread()
         {
