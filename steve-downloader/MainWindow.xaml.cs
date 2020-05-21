@@ -11,6 +11,11 @@ using System.Windows.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Microsoft.WindowsAPICodePack.Shell.Interop;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using Newtonsoft.Json;
+using Microsoft.Win32;
 
 namespace steve_downloader
 {
@@ -26,6 +31,13 @@ namespace steve_downloader
         public static string ram_slide_value = "0";
         public static string ram_capable;
         public static string slider_value;
+        public string json_test; 
+
+
+
+
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -198,8 +210,28 @@ namespace steve_downloader
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
+            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\data.json")) 
+            {
+               string a =  File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\data.json");
+                //var json4 = JObject.FromObject(new { id = "J01", name = "June", age = 23 });
+
+                //string json = JsonConvert.SerializeObject(json4);
+                //File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + @"\data.json", json);
+            }
+            else
+            {
+                string json_path = AppDomain.CurrentDomain.BaseDirectory + @"\data.json";
+                FileStream stream = File.Create(json_path);
+                stream.Close();
+
+            }
+
+
+
+            //컴퓨터 정보
             Thread t = new Thread(new ThreadStart(get_system_information));
             t.Start();
+            //프로그래스바
             BackgroundWorker worker_ram = new BackgroundWorker();
             BackgroundWorker worker_cpu = new BackgroundWorker();
             worker_cpu.WorkerReportsProgress = true;
@@ -255,9 +287,44 @@ namespace steve_downloader
             ram_progressbar.Value = e.ProgressPercentage;
             ram_using.Text = " " + Convert.ToString(ram_progressbar.Value) + "%";
         }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void luanch_mincraft_Click(object sender, RoutedEventArgs e)
+        {
+            string jsonUpdateFile = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\data.json");
+            JObject jsonO = JObject.Parse(jsonUpdateFile);
+            //json 파일을 이용하여 경로 재설정 예정
+            if (File.Exists(Convert.ToString(jsonO["basic_path"])))
+            {
+                System.Diagnostics.Process.Start(Convert.ToString(jsonO["basic_path"]));
+            }
+            else if (File.Exists(Convert.ToString(jsonO["selected_path"])))
+            {
+                System.Diagnostics.Process.Start(Convert.ToString(jsonO["selected_path"]));
+            }
+            else
+            {
+                OpenFileDialog dialog = new OpenFileDialog()
+                {
+                    Filter = "Exe files(*.exe) | *.exe;",
+                    Multiselect = false,
+                    Title = "마크 선택해라"
+                };
+                dialog.ShowDialog();
+                jsonO.Add("selected_path", dialog.FileName);
+                string convert_json = Convert.ToString(jsonO);
+                File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\data.json", convert_json);
+
+            }
+            
+
+        }
     }
-        //램 설정
-        public static class PerformanceInfo
+    //램 설정
+    public static class PerformanceInfo
         {
             [DllImport("psapi.dll", SetLastError = true)]
             [return: MarshalAs(UnmanagedType.Bool)]

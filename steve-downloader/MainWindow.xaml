@@ -11,7 +11,7 @@
         xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" 
         xmlns:cpb1="clr-namespace:CircularProgressBar;assembly=CircularProgressBar"
         mc:Ignorable="d" Height="600" Width="1080" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
-        WindowStyle="None" ContentRendered="Window_ContentRendered" Title="Steve Installer" Icon="dc.png">
+        WindowStyle="None" ContentRendered="Window_ContentRendered" LocationChanged="Window_LocationChanged" Title="Steve Installer" Icon="dc.png">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -49,7 +49,7 @@
                     <ColumnDefinition Width="7*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0" Margin="15,15,15,0" Background="#FFD5D5D5">
+                <Grid Grid.Column="0" Margin="15,15,0,0" Background="#FFD5D5D5">
                     <TextBlock Text=" 공지" Foreground="black" FontSize="50"/>
                 </Grid>
                 <Grid Grid.Column="1" Margin="15,15,15,0" Background="#FFD5D5D5">
@@ -88,7 +88,7 @@
                         <Grid Margin="15,15,15,0">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Cpu64Bit" Width="30" Height="30" Foreground="Black"/>
-                                <TextBlock   Text="CPU Using" VerticalAlignment="Center" FontSize="14" Foreground="Black"/>
+                                <TextBlock Text="CPU Using" VerticalAlignment="Center" FontSize="14" Foreground="Black"/>
                             </StackPanel>
                         </Grid>
                         <Grid Margin="15" Height="40">
@@ -204,6 +204,14 @@
                     </StackPanel>
                 </Button>
             </Grid>
+            <Grid Grid.Row="5" HorizontalAlignment="Left">
+                <Button x:Name="luanch_mincraft"  Background="#FFD3D3D3" BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250" Click="luanch_mincraft_Click">
+                    <StackPanel Orientation="Horizontal" Height="81" Width="250">
+                        <materialDesign:PackIcon Kind="Minecraft" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                        <TextBlock Text=" 마인크래프트 실행 " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
         </Grid>
         <!--ProgressBar-->
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="CenterGrid">
@@ -213,8 +221,13 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FF4A56A8">
-                    <ProgressBar Height="30" HorizontalAlignment="Left" Width="860" Margin="15">
-                    </ProgressBar>
+                    <Grid  Background="#FF4A56A8">
+                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="860" Margin="15,0" Value="20" Foreground="Lime"/>
+                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="860" Margin="15,15" Value="10" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC"/>
+                        <TextBlock Text="0%" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" />
+                        <TextBlock Text="7 / 6" VerticalAlignment="Center" Margin="20,0,15,0" Foreground="Black" FontSize="15"/>
+                    </Grid>
+                    
                     <Button x:Name="Install_Start" FontSize="20" Width="150" Height="30" Click="Install_Start_Click" Content="Install"/>
                 </StackPanel>
             </Grid>
