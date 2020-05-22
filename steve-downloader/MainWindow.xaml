@@ -13,6 +13,53 @@
         mc:Ignorable="d" Height="600" Width="1080" Foreground="White" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
         WindowStyle="None" ContentRendered="Window_ContentRendered" LocationChanged="Window_LocationChanged" Title="Steve Installer" Icon="dc.png">
 
+    <Window.Resources>
+        <Style x:Key="TransparentStyle_gray" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border>
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Gray"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid Background="Transparent">
+                                <ContentPresenter></ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>        
+        <Style x:Key="TransparentStyle_xname" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border>
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{x:Null}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid Background="Transparent">
+                                <ContentPresenter></ContentPresenter>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="55"/>
@@ -27,15 +74,15 @@
         <!--상단바-->
         <Grid x:Name="TopGrid"  Grid.ColumnSpan="3"  Background="#FF4A56A8" MouseDown="TopGrid_MouseDown">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="minize" HorizontalAlignment="Right" Width="55" BorderBrush="{x:Null}" Click="minize_Click" Background="#FF4A56A8" >
-                    <materialDesign:PackIcon Kind="WindowMinimize"/>
+                <Button x:Name="minize"   HorizontalAlignment="Right" Style="{StaticResource TransparentStyle_xname}" Width="55" BorderBrush="{x:Null}" Click="minize_Click" Background="#FF4A56A8" >
+                    <materialDesign:PackIcon Kind="WindowMinimize" Margin="20,20,0,0"/>
                 </Button>
-                <Button x:Name="Quiet" HorizontalAlignment="Right" Width="55" Background="#FF4A56A8" Foreground="Red" BorderBrush="{x:Null}" Click="Quiet_Click">
-                    <materialDesign:PackIcon Kind="Xamarin"/>
+                <Button x:Name="Quiet" HorizontalAlignment="Right" Style="{StaticResource TransparentStyle_xname}" Width="55" Background="#FF4A56A8" Foreground="Red" BorderBrush="{x:Null}" Click="Quiet_Click">
+                    <materialDesign:PackIcon Kind="Xamarin" Margin="20,20,0,0"/>
                 </Button>
             </StackPanel>
-            <StackPanel HorizontalAlignment="Left">
-                <TextBlock Text="Steve Installer" Foreground="Black" FontSize="40"/>
+            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                <TextBlock Text=" Steve Installer" Foreground="Black" FontSize="40"/>
             </StackPanel>
         </Grid>
         <!--메인-->
@@ -165,7 +212,7 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" HorizontalAlignment="Left">
-                <Button Background="#FFD3D3D3" x:Name="Direct_visit" BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250" Click="Direct_visit_Click">
+                <Button Background="#FFD3D3D3" Style="{StaticResource TransparentStyle_gray}" x:Name="Direct_visit" BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250" Click="Direct_visit_Click">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Web" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20" Text=" 스티브갤러리로 이동 "/>
@@ -173,7 +220,7 @@
                 </Button>
             </Grid>
             <Grid Grid.Row="1" HorizontalAlignment="Left">
-                <Button Background="#FFD3D3D3"   BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
+                <Button Background="#FFD3D3D3" Style="{StaticResource TransparentStyle_gray}"   BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="email" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock Text=" 완장에게 문의하기  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
@@ -181,7 +228,7 @@
                 </Button>
             </Grid>
             <Grid Grid.Row="2" HorizontalAlignment="left">
-                <Button Background="#FFD3D3D3"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
+                <Button Background="#FFD3D3D3" Style="{StaticResource TransparentStyle_gray}"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Notebook" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock Text=" 패치 노트  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
@@ -189,7 +236,7 @@
                 </Button>
             </Grid>
             <Grid Grid.Row="3" HorizontalAlignment="Left">
-                <Button Background="#FFD3D3D3"  BorderBrush="{x:Null}" Cursor="Hand" Click="Button_Click" Height="81" Width="250">
+                <Button x:Name="btn_modlist" Style="{StaticResource TransparentStyle_gray}"  Click="modlist_Click" Background="#FFD3D3D3"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Wrench" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock Text=" 추가모드  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
@@ -197,7 +244,7 @@
                 </Button>
             </Grid>
             <Grid Grid.Row="4" HorizontalAlignment="Left">
-                <Button Background="#FFD3D3D3" BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
+                <Button Background="#FFD3D3D3" Style="{StaticResource TransparentStyle_gray}"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Wikipedia" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock Text=" 위키  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
@@ -205,7 +252,7 @@
                 </Button>
             </Grid>
             <Grid Grid.Row="5" HorizontalAlignment="Left">
-                <Button x:Name="luanch_mincraft"  Background="#FFD3D3D3" BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250" Click="luanch_mincraft_Click">
+                <Button x:Name="luanch_mincraft" Style="{StaticResource TransparentStyle_gray}"  Background="#FFD3D3D3" BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250" Click="luanch_mincraft_Click">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Minecraft" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
                         <TextBlock Text=" 마인크래프트 실행 " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>

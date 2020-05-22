@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Media.Effects;
 using System.Management;
 using steve_downloader.second_window;
+using steve_downloader.modlist;
 using steve_downloader.download;
 using System.Windows.Threading;
 using System.Diagnostics;
@@ -26,8 +27,10 @@ namespace steve_downloader
     {
         DropShadowEffect shadowEffect;
         PerformanceCounter cpuCounter;
-        public static bool open_window = true;
-        public static bool open_window_visiable = true;
+        public static bool open_window_path = true;
+        public static bool open_window_path_visiable = true;
+        public static bool open_window_modlist = true;
+        public static bool open_window_modlist_visiable = true;
         public static string ram_slide_value = "0";
         public static string ram_capable;
         public static string slider_value;
@@ -48,9 +51,14 @@ namespace steve_downloader
             return ram_slide_value;
 
         }
-        public void open_bool()
+        public void open_path_bool()
         {
-            open_window_visiable = true;
+            open_window_path_visiable = true;
+            return;
+        }       
+        public void open_modlist_bool()
+        {
+            open_window_modlist_visiable = true;
             return;
         }
         //  byte -> GB
@@ -96,24 +104,19 @@ namespace steve_downloader
             second install_page = new second();
             install_page.Owner = Application.Current.MainWindow;
             install_page.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            if (open_window == false)
+            if (open_window_path == false)
             {
-                if (open_window_visiable == true)
+                if (open_window_path_visiable == true)
                 {
-                    open_window_visiable = false;
+                    open_window_path_visiable = false;
                     install_page.Visibility = Visibility.Visible;
                 }
             }
             else
             {
-                open_window = false;
+                open_window_path = false;
                 install_page.Show();
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Download asg = new Download();
         }
 
         private void SideMenu_MouseEnter(object sender, MouseEventArgs e)
@@ -321,6 +324,26 @@ namespace steve_downloader
             }
             
 
+        }
+
+        private void modlist_Click(object sender, RoutedEventArgs e)
+        {
+            steve_downloader.modlist.modlist skla = new steve_downloader.modlist.modlist();
+            skla.Owner = Application.Current.MainWindow;
+            skla.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            if (open_window_modlist == false)
+            {
+                if (open_window_modlist_visiable == true)
+                {
+                    open_window_modlist_visiable = false;
+                    skla.Visibility = Visibility.Visible;
+                }
+            }
+            else
+            {
+                open_window_modlist = false;
+                skla.Show();
+            }
         }
     }
     //램 설정
