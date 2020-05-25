@@ -33,7 +33,13 @@ namespace steve_downloader.second_window
         public second()
         {
             InitializeComponent();
-            
+
+        }
+
+        public bool setdownload()
+        {
+            set_download_start = true;
+            return set_download_start;
         }
 
         public void find_path_Click(object sender, RoutedEventArgs e)
@@ -53,14 +59,6 @@ namespace steve_downloader.second_window
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            try
-            {
-                var F_th = new Thread(F_Thread);
-            }
-            catch
-            {
-                System.Windows.MessageBox.Show("성공");
-            }
         }
 
         private void download_ok_Click(object sender, RoutedEventArgs e)
@@ -69,17 +67,7 @@ namespace steve_downloader.second_window
             { 
             this.Visibility = Visibility.Collapsed;
             askdl.open_path_bool();
-            set_download_start = true;
-            }
-        }
-        private void F_Thread()
-        {
-            while (set_download_start == true)
-            {
-                    using (WebClient client = new WebClient())
-                    {
-                     client.DownloadDataAsync(korean_link, donwloadpath);
-                    }
+            setdownload();
             }
         }
     }

@@ -97,7 +97,18 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" Margin="15,15,0,0" Background="#FFD5D5D5">
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="70"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
                     <TextBlock Text=" 공지" Foreground="black" FontSize="50"/>
+                    <Grid Grid.Row="1" Margin="10">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="- 응딩이" FontSize="22" Foreground="Gray" Margin="5"/>
+                            <TextBlock Text="- 응딩이" FontSize="22" Foreground="Gray" Margin="5"/>
+                            <TextBlock Text="- 응딩이" FontSize="22" Foreground="Gray" Margin="5"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
                 <Grid Grid.Column="1" Margin="15,15,15,0" Background="#FFD5D5D5">
                     <Grid.ColumnDefinitions>
@@ -239,7 +250,7 @@
                 <Button x:Name="btn_modlist" Style="{StaticResource TransparentStyle_gray}"  Click="modlist_Click" Background="#FFD3D3D3"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Wrench" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
-                        <TextBlock Text=" 추가모드  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <TextBlock Text=" 추가모드 및 설정 " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -269,13 +280,14 @@
                 </Grid.RowDefinitions>
                 <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FF4A56A8">
                     <Grid  Background="#FF4A56A8">
-                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="860" Margin="15,0" Value="20" Foreground="Lime"/>
-                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="860" Margin="15,15" Value="10" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC"/>
-                        <TextBlock Text="0%" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" />
+                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="800" Margin="15,0" Value="20" Foreground="Lime" x:Name="download_progressbar"/>
+                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="10" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC"/>
+                        <TextBlock Text="0%" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text"/>
                         <TextBlock Text="7 / 6" VerticalAlignment="Center" Margin="20,0,15,0" Foreground="Black" FontSize="15"/>
                     </Grid>
-                    
-                    <Button x:Name="Install_Start" FontSize="20" Width="150" Height="30" Click="Install_Start_Click" Content="Install"/>
+
+                    <Button x:Name="Install_Setting" FontSize="20" Width="110" Height="30" Click="Install_Setting_Click" Content="Setting"/>
+                    <Button x:Name="Install_Start" FontSize="20" Width="110" Height="30" Click="Install_Start_Click" Content="Install" Margin="10"/>
                 </StackPanel>
             </Grid>
         </Grid>

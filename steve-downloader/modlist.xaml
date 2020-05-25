@@ -59,7 +59,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBlock Text="Mod List" FontSize="50" Margin="5"/>
-                    <TextBlock Text="모드 리스트" FontSize="22" Foreground="Gray" Margin="5,0"/>
+                    <TextBlock Text="추가 모드 리스트" FontSize="22" Foreground="Gray" Margin="5,0"/>
                 </StackPanel>
                 <Grid Grid.Column="1">
                     <Border Margin="5" BorderThickness="1" BorderBrush="Black">

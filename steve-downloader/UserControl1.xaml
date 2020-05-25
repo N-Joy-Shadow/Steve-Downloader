@@ -8,39 +8,40 @@
              mc:Ignorable="d" d:DesignHeight="400" AllowsTransparency="True" Background="Transparent" 
              d:DesignWidth="540" ResizeMode="NoResize" WindowStyle="None"  Height="400" Width="540" ContentRendered="Window_ContentRendered">
 
-    <Border Background="White" BorderBrush="Black" BorderThickness="1,1,1,1" CornerRadius="30,30,30,30">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="20"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="20"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="1" Grid.Column="1">
-                <StackPanel HorizontalAlignment="Left" Width="420">
-                    <TextBlock FontSize="40" Text="Select Your Path"/>
-                    <TextBlock Text="경로 선택" FontSize="20" Foreground="Gray"/>
-                    <Grid Width="400" Height="40">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBox IsReadOnly="True" Text="" x:Name="paste_path" Width="320" Height="20" Margin="5"/>
-                            <Button x:Name="find_path" Width="60" Height="20" Click="find_path_Click">...</Button>
-                        </StackPanel>
-                    </Grid>
-                    <!--
-                    <TextBlock Text="왼쪽 오른쪽 '...'을 눌러 경로를 선택해 주세요." FontSize="8" Margin=""/>
-                -->
-                </StackPanel>
-                <Grid Width="500" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
-                        <Button x:Name="download_ok" Height="20" Width="60" Margin="4" FontSize="8" Click="download_ok_Click">확인</Button>
-                        <Button x:Name="CLosePopup" Height="20" Width="60" Margin="2" FontSize="8" Click="CLosePopup_Click">닫기</Button>
+<Border Background="White" BorderBrush="Black" BorderThickness="1,1,1,1" CornerRadius="30,30,30,30">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <StackPanel HorizontalAlignment="Left" Width="420">
+                <TextBlock FontSize="40" Text="Select Your Path"/>
+                <TextBlock Text="경로 선택" FontSize="20" Foreground="Gray"/>
+                <Grid Width="400" Height="40">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBox IsReadOnly="True" Text="" x:Name="paste_path" Width="320" Height="20" Margin="5"/>
+                        <Button x:Name="find_path" Width="60" Height="20" Click="find_path_Click">...</Button>
                     </StackPanel>
                 </Grid>
+                <!--
+                    <TextBlock Text="왼쪽 오른쪽 '...'을 눌러 경로를 선택해 주세요." FontSize="8" Margin=""/>
+                -->
+            </StackPanel>
+            <Grid Width="500" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
+                        <Button x:Name="download_ok" Height="20" Width="60" Margin="4" FontSize="8" Click="download_ok_Click">확인</Button>
+                    <Button x:Name="CLosePopup" Height="20" Width="60" Margin="2" FontSize="8" Click="CLosePopup_Click">닫기</Button>
+                </StackPanel>
             </Grid>
         </Grid>
-    </Border>
+    </Grid>
+    
+</Border>
 </Window>

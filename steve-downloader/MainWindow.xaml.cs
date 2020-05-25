@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using Newtonsoft.Json;
 using Microsoft.Win32;
+using System.Net;
 
 namespace steve_downloader
 {
@@ -99,7 +100,7 @@ namespace steve_downloader
             this.WindowState = WindowState.Minimized;
         }
 
-        private void Install_Start_Click(object sender, RoutedEventArgs e)
+        private void Install_Setting_Click(object sender, RoutedEventArgs e)
         {
             second install_page = new second();
             install_page.Owner = Application.Current.MainWindow;
@@ -328,7 +329,7 @@ namespace steve_downloader
 
         private void modlist_Click(object sender, RoutedEventArgs e)
         {
-            steve_downloader.modlist.modlist skla = new steve_downloader.modlist.modlist();
+            modlist.modlist skla = new modlist.modlist();
             skla.Owner = Application.Current.MainWindow;
             skla.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             if (open_window_modlist == false)
@@ -343,6 +344,31 @@ namespace steve_downloader
             {
                 open_window_modlist = false;
                 skla.Show();
+            }
+        }
+
+        private void Install_Start_Click(object sender, RoutedEventArgs e)
+        {
+            WebClient dl_mc = new WebClient();
+            Uri uri_forge = new Uri(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip");
+            dl_mc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgress);
+            try
+            {
+                dl_mc.DownloadFileAsync(uri_forge, steve_downloader.second_window.second.donwloadpath);
+            }
+            catch
+            {
+                MessageBox.Show("오류내용 : ");
+            }
+        }
+
+        private void DownloadProgress(object sender, DownloadProgressChangedEventArgs e)
+        {
+            download_progressbar.Value = e.ProgressPercentage;
+            progressbar_text.Text = Convert.ToString(e.ProgressPercentage) + " %  " + Convert.ToString(e.TotalBytesToReceive) +" / " + Convert.ToString(e.BytesReceived);
+            if (e.ProgressPercentage == 100)
+            {
+                download_progressbar.Value = 0;
             }
         }
     }
