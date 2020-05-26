@@ -18,6 +18,8 @@ using System.IO;
 using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.Net;
+using System.IO.Compression;
+using 
 
 namespace steve_downloader
 {
@@ -52,6 +54,17 @@ namespace steve_downloader
             return ram_slide_value;
 
         }
+
+
+
+
+
+
+
+
+
+
+
         public void open_path_bool()
         {
             open_window_path_visiable = true;
@@ -199,7 +212,7 @@ namespace steve_downloader
                 {
                     ram_slider.TickFrequency = 4096;
                 }
-                ram_rate.Text = ram_capable + " / ";
+                ram_rate.Text = " / " + ram_capable;
 
                 //for (int i = 0; i < 10; i++)
                 //{
@@ -352,9 +365,10 @@ namespace steve_downloader
             WebClient dl_mc = new WebClient();
             Uri uri_forge = new Uri(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip");
             dl_mc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgress);
+            dl_mc.DownloadFileCompleted += new AsyncCompletedEventHandler(d_complete);
             try
             {
-                dl_mc.DownloadFileAsync(uri_forge, steve_downloader.second_window.second.donwloadpath);
+                dl_mc.DownloadFileAsync(uri_forge, AppDomain.CurrentDomain.BaseDirectory + @"\minecraft_forge.zip");
             }
             catch
             {
@@ -365,12 +379,39 @@ namespace steve_downloader
         private void DownloadProgress(object sender, DownloadProgressChangedEventArgs e)
         {
             download_progressbar.Value = e.ProgressPercentage;
-            progressbar_text.Text = Convert.ToString(e.ProgressPercentage) + " %  " + Convert.ToString(e.TotalBytesToReceive) +" / " + Convert.ToString(e.BytesReceived);
-            if (e.ProgressPercentage == 100)
-            {
-                download_progressbar.Value = 0;
-            }
+            progressbar_text.Text = Convert.ToString(e.ProgressPercentage) + " %  " + SizeSuffixMb((long)Convert.ToDouble(e.BytesReceived)) +"MB / " + SizeSuffixMb((long)Convert.ToDouble(e.TotalBytesToReceive)) + "MB 포지 다운로드중..";
         }
+
+        public void d_complete(object sender, AsyncCompletedEventArgs e)
+        {
+            download_progressbar.Value = 0;
+            total_download_progressbar.Value = 1;
+            total_download_text.Text = "1 / 7";
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
     //램 설정
     public static class PerformanceInfo

@@ -128,8 +128,8 @@
                             <TextBlock Text="- 권장: 8192MB(8GB)" Margin="5" Foreground="Gray" FontSize="15"/>
                             <TextBlock Text="- 최소: 4096MB(4GB)" Margin="5" Foreground="Gray" FontSize="15"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock x:Name="ram_rate" Text="0000 / "  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
                                 <TextBlock Name="ram_trans" Text="{Binding Path=Value, StringFormat=#, ElementName=ram_slider}"  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
+                                <TextBlock x:Name="ram_rate" Text=" / 000 "  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
                             </StackPanel>
                                 <TextBlock Text="MB" FontSize="14" Foreground="Black" HorizontalAlignment="Center"/>   
                         </StackPanel>
@@ -280,10 +280,10 @@
                 </Grid.RowDefinitions>
                 <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FF4A56A8">
                     <Grid  Background="#FF4A56A8">
-                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="800" Margin="15,0" Value="20" Foreground="Lime" x:Name="download_progressbar"/>
-                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="10" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC"/>
-                        <TextBlock Text="0%" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text"/>
-                        <TextBlock Text="7 / 6" VerticalAlignment="Center" Margin="20,0,15,0" Foreground="Black" FontSize="15"/>
+                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="800" Margin="15,0" Value="0" Foreground="Lime" x:Name="download_progressbar"/>
+                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="0" Maximum="7" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC" x:Name="total_download_progressbar"/>
+                        <TextBlock Text="" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text"/>
+                        <TextBlock Text="" VerticalAlignment="Center" Margin="20,0,15,0" Foreground="Black" FontSize="15" x:Name="total_download_text"/>
                     </Grid>
 
                     <Button x:Name="Install_Setting" FontSize="20" Width="110" Height="30" Click="Install_Setting_Click" Content="Setting"/>
