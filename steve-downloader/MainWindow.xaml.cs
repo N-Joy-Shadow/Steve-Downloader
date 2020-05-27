@@ -6,20 +6,16 @@ using System.Threading;
 using System.Windows.Media.Effects;
 using System.Management;
 using steve_downloader.second_window;
-using steve_downloader.modlist;
-using steve_downloader.download;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Microsoft.WindowsAPICodePack.Shell.Interop;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.Net;
 using System.IO.Compression;
-using 
+using System.DirectoryServices.AccountManagement;
 
 namespace steve_downloader
 {
@@ -56,12 +52,23 @@ namespace steve_downloader
         }
 
 
+        public void download_progress_function(double ProgressPercentage, double BytesReceived, double TotalBytesToReceive, string context)
+        {
+            download_progressbar.Value = ProgressPercentage;
+            progressbar_text.Text = Convert.ToString(ProgressPercentage) + " %  " + SizeSuffixMb((long)Convert.ToDouble(BytesReceived)) +"MB / " + SizeSuffixMb((long)Convert.ToDouble(TotalBytesToReceive)) + context;
+        }
+        public void dz_complete_function(int progress_value, int progressed, int totalprogressed)
+        {
+            download_progressbar.Value = 0;
+            total_download_progressbar.Value = progress_value;
+            total_download_text.Text = progressed+" / " +totalprogressed;
+        }
 
-
-
-
-
-
+        public void extract_file(string zip_path, string extract_path, int progressed, int totalprogressed)
+        {
+            ZipFile.ExtractToDirectory(zip_path, extract_path );
+            total_download_text.Text = progressed + " / " + totalprogressed;
+        }
 
 
 
@@ -366,28 +373,18 @@ namespace steve_downloader
             Uri uri_forge = new Uri(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip");
             dl_mc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgress);
             dl_mc.DownloadFileCompleted += new AsyncCompletedEventHandler(d_complete);
-            try
-            {
-                dl_mc.DownloadFileAsync(uri_forge, AppDomain.CurrentDomain.BaseDirectory + @"\minecraft_forge.zip");
-            }
-            catch
-            {
-                MessageBox.Show("오류내용 : ");
-            }
+            dl_mc.DownloadFileAsync(uri_forge, AppDomain.CurrentDomain.BaseDirectory + @"\minecraft_forge.zip");
         }
 
         private void DownloadProgress(object sender, DownloadProgressChangedEventArgs e)
         {
-            download_progressbar.Value = e.ProgressPercentage;
-            progressbar_text.Text = Convert.ToString(e.ProgressPercentage) + " %  " + SizeSuffixMb((long)Convert.ToDouble(e.BytesReceived)) +"MB / " + SizeSuffixMb((long)Convert.ToDouble(e.TotalBytesToReceive)) + "MB 포지 다운로드중..";
+            download_progress_function(e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive, "MB 포지 다운로드중..");
         }
 
         public void d_complete(object sender, AsyncCompletedEventArgs e)
         {
-            download_progressbar.Value = 0;
-            total_download_progressbar.Value = 1;
-            total_download_text.Text = "1 / 7";
-
+            dz_complete_function(1, 1, 9);
+            extract_file(@".\minecraft_forge.zip", @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft", 2,9);
         }
 
 
