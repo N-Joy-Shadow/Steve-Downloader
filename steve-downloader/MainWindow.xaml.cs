@@ -15,7 +15,7 @@ using System.IO;
 using Microsoft.Win32;
 using System.Net;
 using System.IO.Compression;
-using System.DirectoryServices.AccountManagement;
+using Microsoft.Azure.Documents.SystemFunctions;
 
 namespace steve_downloader
 {
@@ -66,8 +66,13 @@ namespace steve_downloader
 
         public void extract_file(string zip_path, string extract_path, int progressed, int totalprogressed)
         {
-            ZipFile.ExtractToDirectory(zip_path, extract_path );
-            total_download_text.Text = progressed + " / " + totalprogressed;
+            ZipArchieveCountFile.ZipFileCount(zip_path);
+            download_progressbar.Maximum = ZipArchieveCountFile.count;
+            download_progressbar.Value = 50;
+            using (ZipArchive archive = ZipFile.Open(zip_path, ZipArchiveMode.Update))
+            {
+                ZipArchiveExtensions.ExtractToDirectory(archive, extract_path, true);
+            }
         }
 
 
@@ -385,6 +390,7 @@ namespace steve_downloader
         {
             dz_complete_function(1, 1, 9);
             extract_file(@".\minecraft_forge.zip", @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft", 2,9);
+
         }
 
 
@@ -464,5 +470,46 @@ namespace steve_downloader
 
             }
         }
-    
+
+
+    //압축 오버라이드
+    public static class ZipArchiveExtensions
+    {
+        public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
+        {
+            if (!overwrite)
+            {
+                archive.ExtractToDirectory(destinationDirectoryName);
+                return;
+            }
+            foreach (ZipArchiveEntry file in archive.Entries)
+            {
+                string completeFileName = Path.Combine(destinationDirectoryName, file.FullName);
+                string directory = Path.GetDirectoryName(completeFileName);
+
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+
+                if (file.Name != "")
+                    file.ExtractToFile(completeFileName, true);
+            }
+        }
+    }
+    public static class ZipArchieveCountFile
+    {
+        public static int count;
+        public static int ZipFileCount(String zipFileName)
+        {
+            using (ZipArchive archive_R = ZipFile.Open(zipFileName, ZipArchiveMode.Read))
+            {
+
+                // We count only named (i.e. that are with files) entries
+                foreach (var entry in archive_R.Entries)
+                    if (!String.IsNullOrEmpty(entry.Name))
+                        count += 1;
+                return count;
+            }
+
+        }
+    }
 }
