@@ -27,8 +27,6 @@ namespace steve_downloader.second_window
     {
         public static string select_path;
         public bool set_download_start = false;
-        public static Uri korean_link = new Uri("http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar");
-        public static string donwloadpath = second.select_path + "\\koreanchat-creo-1.12-1.9.jar";
         MainWindow askdl = new MainWindow();
         public second()
         {

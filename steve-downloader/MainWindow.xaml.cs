@@ -26,6 +26,7 @@ namespace steve_downloader
     {
         DropShadowEffect shadowEffect;
         PerformanceCounter cpuCounter;
+        public string modpac_title = "test";
         public static bool open_window_path = true;
         public static bool open_window_path_visiable = true;
         public static bool open_window_modlist = true;
@@ -33,48 +34,94 @@ namespace steve_downloader
         public static string ram_slide_value = "0";
         public static string ram_capable;
         public static string slider_value;
-        public string json_test; 
+        public string json_test;
+        public int cmp_counted = 0;
 
-
-
-
-
+        public static string mc_zip_path;
+        public static string mc_folder;
+        public static string processed_context;
+        public static int pro_total;
+        public static int process;
+        public static bool bool_extract;
 
         public MainWindow()
         {
             InitializeComponent();
         }
-        public string Raqm(string value)
+        public string Ram_slider_change(string value)
         {
-            ram_slide_value = value;
+            mc_folder = value;
             return ram_slide_value;
 
         }
 
+        public int completed_counted() 
+        { 
+            cmp_counted++;
+            total_download_progressbar.Value = cmp_counted;
+            //pro_total 고치기
+            total_download_text.Text = cmp_counted + " / " + pro_total;
+            return cmp_counted;
+        }
+
+
+
+        public void Return_donwload_function(string minecraft_folder, string zip_path, string context, bool extract_bool)
+        {
+            mc_folder = minecraft_folder;
+            mc_zip_path = zip_path;
+            processed_context = context;
+            bool_extract = extract_bool;
+            return;
+        }
+
+        public void donwload_function(string Uri, string donwload_path, string folder, string zip, string s_context, bool extract)
+        {
+            Return_donwload_function(folder, zip, s_context, extract);
+            progressbar_text_text.Text = processed_context + " 설치중...";
+            WebClient dl_mc = new WebClient();
+            Uri uri_forge = new Uri(Uri);
+            dl_mc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgress);
+            dl_mc.DownloadFileCompleted += new AsyncCompletedEventHandler(download_complete);
+            dl_mc.DownloadFileAsync(uri_forge, donwload_path);
+
+        }
+
+
+        private void DownloadProgress(object sender, DownloadProgressChangedEventArgs e )
+        {
+            download_progress_function(e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive, "MB");
+
+        }
+
+        public void download_complete(object sender, AsyncCompletedEventArgs e)
+        {
+            download_progressbar.Value = 0;
+            
+            if (bool_extract == true)
+            {
+                progressbar_text_text.Text = processed_context + " 압축푸는중...";
+                extract_file(mc_zip_path, mc_folder);
+            }
+            completed_counted();
+
+        }
 
         public void download_progress_function(double ProgressPercentage, double BytesReceived, double TotalBytesToReceive, string context)
         {
             download_progressbar.Value = ProgressPercentage;
             progressbar_text.Text = Convert.ToString(ProgressPercentage) + " %  " + SizeSuffixMb((long)Convert.ToDouble(BytesReceived)) +"MB / " + SizeSuffixMb((long)Convert.ToDouble(TotalBytesToReceive)) + context;
         }
-        public void dz_complete_function(int progress_value, int progressed, int totalprogressed)
-        {
-            download_progressbar.Value = 0;
-            total_download_progressbar.Value = progress_value;
-            total_download_text.Text = progressed+" / " +totalprogressed;
-        }
 
-        public void extract_file(string zip_path, string extract_path, int progressed, int totalprogressed)
+        public void extract_file(string zip_path, string extract_path)
         {
-            ZipArchieveCountFile.ZipFileCount(zip_path);
-            download_progressbar.Maximum = ZipArchieveCountFile.count;
-            download_progressbar.Value = 50;
             using (ZipArchive archive = ZipFile.Open(zip_path, ZipArchiveMode.Update))
             {
                 ZipArchiveExtensions.ExtractToDirectory(archive, extract_path, true);
             }
+           
         }
-
+       
 
 
         public void open_path_bool()
@@ -280,7 +327,7 @@ namespace steve_downloader
 
         private void ram_slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Raqm(Convert.ToString(Math.Round(ram_slider.Value)));
+            Ram_slider_change(Convert.ToString(Math.Round(ram_slider.Value)));
 
         }
 
@@ -316,11 +363,7 @@ namespace steve_downloader
             ram_progressbar.Value = e.ProgressPercentage;
             ram_using.Text = " " + Convert.ToString(ram_progressbar.Value) + "%";
         }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-        }
-
+        //업데이트 필요
         private void luanch_mincraft_Click(object sender, RoutedEventArgs e)
         {
             string jsonUpdateFile = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\data.json");
@@ -374,24 +417,39 @@ namespace steve_downloader
 
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
-            WebClient dl_mc = new WebClient();
-            Uri uri_forge = new Uri(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip");
-            dl_mc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgress);
-            dl_mc.DownloadFileCompleted += new AsyncCompletedEventHandler(d_complete);
-            dl_mc.DownloadFileAsync(uri_forge, AppDomain.CurrentDomain.BaseDirectory + @"\minecraft_forge.zip");
+            //대충 체크박스로 maxvalue 설정하기
+            /**
+            if
+            {
+
+            }
+            else if
+            {
+
+            }
+            else
+            {
+
+            }
+            **/
+           
+            string current_folder = AppDomain.CurrentDomain.BaseDirectory;
+            //폴더 만들기
+            try
+            {
+                Directory.CreateDirectory(second.select_path + @"\" + modpac_title);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            // 포지 다운및 압축풀기
+            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", current_folder + @"\minecraft_forge.zip",  @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft", @".\minecraft_forge.zip","포지", true);
+            // 모드팩 다운및 압축풀기
+            //donwload_function(@"Url", current_folder + @"\modpack.zip", second.select_path + @"\"+ modpac_title,@".\modpack.zip","모드팩", true);
         }
 
-        private void DownloadProgress(object sender, DownloadProgressChangedEventArgs e)
-        {
-            download_progress_function(e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive, "MB 포지 다운로드중..");
-        }
-
-        public void d_complete(object sender, AsyncCompletedEventArgs e)
-        {
-            dz_complete_function(1, 1, 9);
-            extract_file(@".\minecraft_forge.zip", @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft", 2,9);
-
-        }
+        //extract_file(,  2, 9, ;
 
 
 
@@ -475,6 +533,7 @@ namespace steve_downloader
     //압축 오버라이드
     public static class ZipArchiveExtensions
     {
+        public static int count;
         public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
         {
             if (!overwrite)
@@ -492,24 +551,9 @@ namespace steve_downloader
 
                 if (file.Name != "")
                     file.ExtractToFile(completeFileName, true);
+                count++;
             }
         }
     }
-    public static class ZipArchieveCountFile
-    {
-        public static int count;
-        public static int ZipFileCount(String zipFileName)
-        {
-            using (ZipArchive archive_R = ZipFile.Open(zipFileName, ZipArchiveMode.Read))
-            {
-
-                // We count only named (i.e. that are with files) entries
-                foreach (var entry in archive_R.Entries)
-                    if (!String.IsNullOrEmpty(entry.Name))
-                        count += 1;
-                return count;
-            }
-
-        }
-    }
+ 
 }
