@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:steve_downloader.second_window"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" d:DesignHeight="400" AllowsTransparency="True" Background="Transparent" 
-             d:DesignWidth="680" ResizeMode="NoResize" WindowStyle="None"  Height="500" Width="680">
+             d:DesignWidth="680" ResizeMode="NoResize" WindowStyle="None"  Height="500" Width="680" ContentRendered="Window_ContentRendered">
     <Window.Resources>
         <Style x:Key="TransparentStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -53,24 +53,26 @@
             </Grid>
             <Grid Grid.Row="0" Grid.ColumnSpan="3" x:Name="top_grid" MouseDown="top_grid_MouseDown"/>
             <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="349*"/>
+                    <RowDefinition Height="100*"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition  Height="1*"/>
-                    <RowDefinition  Height="1*"/>
-                </Grid.RowDefinitions>
-                <StackPanel>
+                <StackPanel Grid.RowSpan="2">
                     <TextBlock Text="Mod List" FontSize="50" Margin="5"/>
                     <TextBlock Text="추가 모드 리스트" FontSize="22" Foreground="Gray" Margin="5,0"/>
+                    <TextBlock Text="" Margin="5" x:Name="optifine_txt" FontSize="18" Foreground="Gray"/>
+                    <TextBlock Text="" Margin="5" x:Name="korean_txt" FontSize="18" Foreground="Gray"/>
                 </StackPanel>
                 <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
                     <Border Margin="5" BorderThickness="1" BorderBrush="Black">
                         <StackPanel>
                             <TextBlock Text="추가모드" Margin="5" FontSize="20"/>
-                            <CheckBox x:Name="cbx_optifine" Margin="10" Content="optifine 옵티파인" ToolTip="버전은 F5를 사용합니다."/>
-                            <CheckBox x:Name="cbx_koreanchat" Margin="10" Content="korean chat 한글채팅"/>
+                            <CheckBox x:Name="cbx_optifine_checked" Margin="10" Content="optifine 옵티파인" ToolTip="버전은 F5를 사용합니다." Checked="cbx_optifine_checked_checked" Unchecked="cbx_optifine_checked_Unchecked"/>
+                            <CheckBox x:Name="cbx_koreanchat_checked" Margin="10" Content="korean chat 한글채팅" Checked="cbx_koreanchat_Checked_checked" Unchecked="cbx_koreanchat_checked_Unchecked"/>
                         </StackPanel>
                     </Border>
                 </Grid>

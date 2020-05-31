@@ -37,10 +37,14 @@ namespace steve_downloader
         public string json_test;
         public int cmp_counted = 0;
 
+
+
+
+
         public static string mc_zip_path;
         public static string mc_folder;
         public static string processed_context;
-        public static int pro_total;
+        public static int pro_total = 5;
         public static int process;
         public static bool bool_extract;
 
@@ -59,7 +63,6 @@ namespace steve_downloader
         { 
             cmp_counted++;
             total_download_progressbar.Value = cmp_counted;
-            //pro_total 고치기
             total_download_text.Text = cmp_counted + " / " + pro_total;
             return cmp_counted;
         }
@@ -97,13 +100,13 @@ namespace steve_downloader
         public void download_complete(object sender, AsyncCompletedEventArgs e)
         {
             download_progressbar.Value = 0;
-            
+            completed_counted();
             if (bool_extract == true)
             {
                 progressbar_text_text.Text = processed_context + " 압축푸는중...";
                 extract_file(mc_zip_path, mc_folder);
             }
-            completed_counted();
+            
 
         }
 
@@ -415,25 +418,50 @@ namespace steve_downloader
             }
         }
 
+        private void checkbox_check()
+        {
+            /**
+            if (modlist.modlist.optifine_check == true)
+            {
+                pro_total++;
+            }
+    **/
+            if (modlist.modlist.optifine_check == false)
+            {
+                pro_total--;
+            }
+            /**
+            if (modlist.modlist.koreanchat_check == true)
+            {
+                pro_total++;
+            }
+    **/
+            if (modlist.modlist.koreanchat_check == false)
+            {
+                pro_total--;
+            }
+        }
+
+
+
+
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
-            //대충 체크박스로 maxvalue 설정하기
-            /**
-            if
-            {
-
-            }
-            else if
-            {
-
-            }
-            else
-            {
-
-            }
-            **/
-           
+            // 초기 설정
+            total_download_text.Text = "0 / 0";
+            total_download_progressbar.Value = 0;
+            total_download_progressbar.Maximum = 0;
+            download_progressbar.Value = 0;
+            progressbar_text.Text = "";
+            progressbar_text_text.Text = "";
+            pro_total = 5;
+            cmp_counted = 0;
             string current_folder = AppDomain.CurrentDomain.BaseDirectory;
+            // 다운 시작
+            //대충 체크박스로 maxvalue 설정하기
+            checkbox_check();
+            total_download_progressbar.Maximum = pro_total;
+            total_download_text.Text = "0 / " + pro_total;
             //폴더 만들기
             try
             {
@@ -447,9 +475,17 @@ namespace steve_downloader
             donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", current_folder + @"\minecraft_forge.zip",  @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft", @".\minecraft_forge.zip","포지", true);
             // 모드팩 다운및 압축풀기
             //donwload_function(@"Url", current_folder + @"\modpack.zip", second.select_path + @"\"+ modpac_title,@".\modpack.zip","모드팩", true);
-        }
+            if (modlist.modlist.optifine_check == true) 
+            {
+                donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", current_folder + @"OptiFine_1.12.2_HD_U_F5.jar", null,null,"옵티파인", false);
+            }
+            if (modlist.modlist.koreanchat_check == true)
+            {
+                donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar", current_folder + @"koreanchat-creo-1.12-1.9.jar", null,null,"한글채팅",false);
+            }
 
-        //extract_file(,  2, 9, ;
+
+        }
 
 
 

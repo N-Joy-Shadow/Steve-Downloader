@@ -51,19 +51,20 @@ namespace steve_downloader.second_window
 
         private void CLosePopup_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+            this.Visibility = Visibility.Hidden;
             askdl.open_path_bool();
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
+            paste_path.Text = select_path;
         }
 
         private void download_ok_Click(object sender, RoutedEventArgs e)
         {
             if (paste_path.Text != "")
             { 
-            this.Visibility = Visibility.Collapsed;
+            this.Visibility = Visibility.Hidden;
             askdl.open_path_bool();
             setdownload();
             }
