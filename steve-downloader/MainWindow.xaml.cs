@@ -15,7 +15,6 @@ using System.IO;
 using Microsoft.Win32;
 using System.Net;
 using System.IO.Compression;
-using Microsoft.Azure.Documents.SystemFunctions;
 
 namespace steve_downloader
 {
@@ -26,7 +25,7 @@ namespace steve_downloader
     {
         DropShadowEffect shadowEffect;
         PerformanceCounter cpuCounter;
-        public string modpac_title = "test";
+        public string modpack_title = "mollalehu";
         public static bool open_window_path = true;
         public static bool open_window_path_visiable = true;
         public static bool open_window_modlist = true;
@@ -37,7 +36,7 @@ namespace steve_downloader
         public string json_test;
         public int cmp_counted = 0;
 
-
+        public string mc_forced_folder = @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft";
 
 
 
@@ -54,7 +53,7 @@ namespace steve_downloader
         }
         public string Ram_slider_change(string value)
         {
-            mc_folder = value;
+            ram_slide_value = value;
             return ram_slide_value;
 
         }
@@ -118,11 +117,17 @@ namespace steve_downloader
 
         public void extract_file(string zip_path, string extract_path)
         {
+            try {
             using (ZipArchive archive = ZipFile.Open(zip_path, ZipArchiveMode.Update))
             {
                 ZipArchiveExtensions.ExtractToDirectory(archive, extract_path, true);
             }
-           
+            }
+            catch
+            {
+                MessageBox.Show("압축파일을 받아 주세요.");
+            }
+
         }
        
 
@@ -374,11 +379,11 @@ namespace steve_downloader
             //json 파일을 이용하여 경로 재설정 예정
             if (File.Exists(Convert.ToString(jsonO["basic_path"])))
             {
-                System.Diagnostics.Process.Start(Convert.ToString(jsonO["basic_path"]));
+                Process.Start(Convert.ToString(jsonO["basic_path"]));
             }
             else if (File.Exists(Convert.ToString(jsonO["selected_path"])))
             {
-                System.Diagnostics.Process.Start(Convert.ToString(jsonO["selected_path"]));
+                Process.Start(Convert.ToString(jsonO["selected_path"]));
             }
             else
             {
@@ -420,28 +425,15 @@ namespace steve_downloader
 
         private void checkbox_check()
         {
-            /**
-            if (modlist.modlist.optifine_check == true)
-            {
-                pro_total++;
-            }
-    **/
             if (modlist.modlist.optifine_check == false)
             {
                 pro_total--;
             }
-            /**
-            if (modlist.modlist.koreanchat_check == true)
-            {
-                pro_total++;
-            }
-    **/
             if (modlist.modlist.koreanchat_check == false)
             {
                 pro_total--;
             }
         }
-
 
 
 
@@ -465,26 +457,55 @@ namespace steve_downloader
             //폴더 만들기
             try
             {
-                Directory.CreateDirectory(second.select_path + @"\" + modpac_title);
+                Directory.CreateDirectory(second.select_path + @"\" + modpack_title);
+                //삭제 해야 할것
+                Directory.CreateDirectory(second.select_path + @"\" + modpack_title + @"\mods");
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
             }
             // 포지 다운및 압축풀기
-            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", current_folder + @"\minecraft_forge.zip",  @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft", @".\minecraft_forge.zip","포지", true);
+            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", current_folder + @"\minecraft_forge.zip", mc_forced_folder, @".\minecraft_forge.zip","포지", true);
             // 모드팩 다운및 압축풀기
-            //donwload_function(@"Url", current_folder + @"\modpack.zip", second.select_path + @"\"+ modpac_title,@".\modpack.zip","모드팩", true);
+            //donwload_function(@"Url", current_folder + @"\modpack.zip", second.select_path + @"\"+ modpack_title,@".\modpack.zip","모드팩", true);
             if (modlist.modlist.optifine_check == true) 
             {
-                donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", current_folder + @"OptiFine_1.12.2_HD_U_F5.jar", null,null,"옵티파인", false);
+                donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.select_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar", null,null,"옵티파인", false);
             }
             if (modlist.modlist.koreanchat_check == true)
             {
-                donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar", current_folder + @"koreanchat-creo-1.12-1.9.jar", null,null,"한글채팅",false);
+                donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar", second.select_path +@"\" +modpack_title+ @"\mods\koreanchat-creo-1.12-1.9.jar", null,null,"KB 한글채팅",false);
             }
 
-
+            string jsonUpdateFile1 = File.ReadAllText(mc_forced_folder + @"\launcher_profiles.json");
+            JObject profiles_json = JObject.Parse(jsonUpdateFile1);
+            try
+            {
+                var pjob = (JObject)profiles_json["profiles"];
+                pjob.Add(modpack_title, new JObject());
+            }
+            catch
+            {
+                profiles_json["profiles"][modpack_title]["created"] = "2020-01-10T17:47:57.637Z";
+                profiles_json["profiles"][modpack_title]["gameDir"] = second.select_path + @"\" + modpack_title;
+                profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
+                profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
+                profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
+                profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2847";
+                profiles_json["profiles"][modpack_title]["name"] = modpack_title;
+                profiles_json["profiles"][modpack_title]["type"] = "custom";
+            }
+            profiles_json["profiles"][modpack_title]["created"] = "2020-01-10T17:47:57.637Z";
+            profiles_json["profiles"][modpack_title]["gameDir"] = second.select_path + @"\" + modpack_title;
+            profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
+            profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
+            profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
+            profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2847";
+            profiles_json["profiles"][modpack_title]["name"] = modpack_title;
+            profiles_json["profiles"][modpack_title]["type"] = "custom";
+            string convert_json = Convert.ToString(profiles_json);
+            File.WriteAllText(mc_forced_folder + @"\launcher_profiles.json", convert_json);
         }
 
 
