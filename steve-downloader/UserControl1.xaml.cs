@@ -26,7 +26,7 @@ namespace steve_downloader.second_window
     public partial class second : Window
     {
         public static string select_path;
-        public bool set_download_start = false;
+        public static bool set_download_start = false;
         MainWindow askdl = new MainWindow();
         public second()
         {

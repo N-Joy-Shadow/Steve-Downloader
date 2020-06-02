@@ -38,7 +38,7 @@ namespace steve_downloader
 
         public string mc_forced_folder = @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft";
 
-
+        public static bool downloading_file = true;
 
         public static string mc_zip_path;
         public static string mc_folder;
@@ -57,6 +57,13 @@ namespace steve_downloader
             return ram_slide_value;
 
         }
+
+        public bool return_downloading_file(bool value)
+        {
+            downloading_file = value;
+            return downloading_file;
+        }
+            
 
         public int completed_counted() 
         { 
@@ -125,7 +132,7 @@ namespace steve_downloader
             }
             catch
             {
-                MessageBox.Show("압축파일을 받아 주세요.");
+                MessageBox.Show("압축파일을 닫아 주세요.");
             }
 
         }
@@ -172,7 +179,18 @@ namespace steve_downloader
 
         private void Quiet_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            if (downloading_file == false)
+            {
+                if (MessageBox.Show("아직 다운로드중입니다. 종료하시겠습니까?", "Real?",MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Application.Current.Shutdown();
+                }
+            }
+            else
+            {
+                Application.Current.Shutdown();
+            }
+            
         }
 
         private void minize_Click(object sender, RoutedEventArgs e)
@@ -391,7 +409,7 @@ namespace steve_downloader
                 {
                     Filter = "Exe files(*.exe) | *.exe;",
                     Multiselect = false,
-                    Title = "마크 선택해라"
+                    Title = "마크를 선택해라"
                 };
                 dialog.ShowDialog();
                 jsonO.Add("selected_path", dialog.FileName);
@@ -439,73 +457,92 @@ namespace steve_downloader
 
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
-            // 초기 설정
-            total_download_text.Text = "0 / 0";
-            total_download_progressbar.Value = 0;
-            total_download_progressbar.Maximum = 0;
-            download_progressbar.Value = 0;
-            progressbar_text.Text = "";
-            progressbar_text_text.Text = "";
-            pro_total = 5;
-            cmp_counted = 0;
-            string current_folder = AppDomain.CurrentDomain.BaseDirectory;
-            // 다운 시작
-            //대충 체크박스로 maxvalue 설정하기
-            checkbox_check();
-            total_download_progressbar.Maximum = pro_total;
-            total_download_text.Text = "0 / " + pro_total;
-            //폴더 만들기
-            try
-            {
-                Directory.CreateDirectory(second.select_path + @"\" + modpack_title);
-                //삭제 해야 할것
-                Directory.CreateDirectory(second.select_path + @"\" + modpack_title + @"\mods");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            // 포지 다운및 압축풀기
-            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", current_folder + @"\minecraft_forge.zip", mc_forced_folder, @".\minecraft_forge.zip","포지", true);
-            // 모드팩 다운및 압축풀기
-            //donwload_function(@"Url", current_folder + @"\modpack.zip", second.select_path + @"\"+ modpack_title,@".\modpack.zip","모드팩", true);
-            if (modlist.modlist.optifine_check == true) 
-            {
-                donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.select_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar", null,null,"옵티파인", false);
-            }
-            if (modlist.modlist.koreanchat_check == true)
-            {
-                donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar", second.select_path +@"\" +modpack_title+ @"\mods\koreanchat-creo-1.12-1.9.jar", null,null,"KB 한글채팅",false);
-            }
+            if (second.set_download_start == true) 
+            { 
+                if (downloading_file == true)
+                {
+                    return_downloading_file(false);
 
-            string jsonUpdateFile1 = File.ReadAllText(mc_forced_folder + @"\launcher_profiles.json");
-            JObject profiles_json = JObject.Parse(jsonUpdateFile1);
-            try
-            {
-                var pjob = (JObject)profiles_json["profiles"];
-                pjob.Add(modpack_title, new JObject());
+                    // 초기 설정
+                    total_download_text.Text = "0 / 0";
+                    total_download_progressbar.Value = 0;
+                    total_download_progressbar.Maximum = 0;
+                    download_progressbar.Value = 0;
+                    progressbar_text.Text = "";
+                    progressbar_text_text.Text = "";
+                    pro_total = 5;
+                    cmp_counted = 0;
+                    string current_folder = AppDomain.CurrentDomain.BaseDirectory;
+                    // 다운 시작
+                    //대충 체크박스로 maxvalue 설정하기
+                    checkbox_check();
+                    total_download_progressbar.Maximum = pro_total;
+                    total_download_text.Text = "0 / " + pro_total;
+                    //폴더 만들기
+                    try
+                    {
+                        Directory.CreateDirectory(second.select_path + @"\" + modpack_title);
+                        //삭제 해야 할것
+                        Directory.CreateDirectory(second.select_path + @"\" + modpack_title + @"\mods");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                    }
+                    // 포지 다운및 압축풀기
+                    donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", current_folder + @"\minecraft_forge.zip", mc_forced_folder, @".\minecraft_forge.zip","포지", true);
+                    // 모드팩 다운및 압축풀기
+                    //donwload_function(@"Url", current_folder + @"\modpack.zip", second.select_path + @"\"+ modpack_title,@".\modpack.zip","모드팩", true);
+                    if (modlist.modlist.optifine_check == true) 
+                    {
+                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.select_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar", null,null,"옵티파인", false);
+                    }
+                    if (modlist.modlist.koreanchat_check == true)
+                    {
+                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar", second.select_path +@"\" +modpack_title+ @"\mods\koreanchat-creo-1.12-1.9.jar", null,null,"KB 한글채팅",false);
+                    }
+                    progressbar_text_text.Text = "Json 설정중..";
+                    string jsonUpdateFile1 = File.ReadAllText(mc_forced_folder + @"\launcher_profiles.json");
+                    JObject profiles_json = JObject.Parse(jsonUpdateFile1);
+                    try
+                    {
+                        var pjob = (JObject)profiles_json["profiles"];
+                        pjob.Add(modpack_title, new JObject());
+                    }
+                    catch
+                    {
+                        profiles_json["profiles"][modpack_title]["created"] = "2020-01-10T17:47:57.637Z";
+                        profiles_json["profiles"][modpack_title]["gameDir"] = second.select_path + @"\" + modpack_title;
+                        profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
+                        profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
+                        profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
+                        profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2847";
+                        profiles_json["profiles"][modpack_title]["name"] = modpack_title;
+                        profiles_json["profiles"][modpack_title]["type"] = "custom";
+                    }
+                    profiles_json["profiles"][modpack_title]["created"] = "2020-01-10T17:47:57.637Z";
+                    profiles_json["profiles"][modpack_title]["gameDir"] = second.select_path + @"\" + modpack_title;
+                    profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
+                    profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
+                    profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
+                    profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2847";
+                    profiles_json["profiles"][modpack_title]["name"] = modpack_title;
+                    profiles_json["profiles"][modpack_title]["type"] = "custom";
+                    string convert_json = Convert.ToString(profiles_json);
+                    File.WriteAllText(mc_forced_folder + @"\launcher_profiles.json", convert_json);
+                    completed_counted();
+                    return_downloading_file(true);
+                    progressbar_text_text.Text = "설치 끝";
+                }
+                else
+                {
+                    MessageBox.Show("이미 다운로드가 진행중입니다.", "Information");
+                }
             }
-            catch
+            else
             {
-                profiles_json["profiles"][modpack_title]["created"] = "2020-01-10T17:47:57.637Z";
-                profiles_json["profiles"][modpack_title]["gameDir"] = second.select_path + @"\" + modpack_title;
-                profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
-                profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
-                profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
-                profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2847";
-                profiles_json["profiles"][modpack_title]["name"] = modpack_title;
-                profiles_json["profiles"][modpack_title]["type"] = "custom";
+                MessageBox.Show("Setting에서 경로를 먼저 지정해 주세요", "Information");
             }
-            profiles_json["profiles"][modpack_title]["created"] = "2020-01-10T17:47:57.637Z";
-            profiles_json["profiles"][modpack_title]["gameDir"] = second.select_path + @"\" + modpack_title;
-            profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
-            profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
-            profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
-            profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2847";
-            profiles_json["profiles"][modpack_title]["name"] = modpack_title;
-            profiles_json["profiles"][modpack_title]["type"] = "custom";
-            string convert_json = Convert.ToString(profiles_json);
-            File.WriteAllText(mc_forced_folder + @"\launcher_profiles.json", convert_json);
         }
 
 
