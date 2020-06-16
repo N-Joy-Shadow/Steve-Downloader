@@ -29,7 +29,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>        
+        </Style>
         <Style x:Key="TransparentStyle_xname" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -53,7 +53,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="55"/>
@@ -125,7 +125,7 @@
                                 <TextBlock Name="ram_trans" Text="{Binding Path=Value, StringFormat=#, ElementName=ram_slider}"  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
                                 <TextBlock x:Name="ram_rate" Text=" / 000 "  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
                             </StackPanel>
-                                <TextBlock Text="MB" FontSize="14" Foreground="Black" HorizontalAlignment="Center"/>   
+                            <TextBlock Text="MB" FontSize="14" Foreground="Black" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -159,7 +159,7 @@
                                 <materialDesign:PackIcon Kind="Memory" Width="30" Height="30" Foreground="Black"/>
                                 <TextBlock  Text="Ram Using" VerticalAlignment="Center" FontSize="14" Foreground="Black"/>
                             </StackPanel>
-                            
+
                         </Grid>
                         <TextBlock Margin="15,0" x:Name="ram_rate_mb" Foreground="Gray"/>
                         <Grid Margin="15,0,15,15" Height="40">
@@ -243,7 +243,7 @@
             <Grid Grid.Row="3" HorizontalAlignment="Left">
                 <Button x:Name="btn_modlist" Style="{StaticResource TransparentStyle_gray}"  Click="modlist_Click" Background="#FFD3D3D3"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
-                        <materialDesign:PackIcon Kind="Wrench" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
+                        <materialDesign:PackIcon Kind="Wrench" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50" Margin="0,16,0,15"/>
                         <TextBlock Text=" 추가모드 및 설정(취소) " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
@@ -274,8 +274,8 @@
                 </Grid.RowDefinitions>
                 <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FF4A56A8">
                     <Grid  Background="#FF4A56A8">
-                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="800" Margin="15,0" Value="0" Foreground="Lime" x:Name="download_progressbar"/>
-                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="0" Maximum="7" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC" x:Name="total_download_progressbar" Foreground="#B206B025"/>
+                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="800" Margin="15,0" Value="0" Foreground="#7F00FF00" x:Name="download_progressbar"/>
+                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="0" Maximum="7" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC" x:Name="total_download_progressbar" Foreground="#990FD39D"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text"/>
                             <TextBlock Text="" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text_text"/>

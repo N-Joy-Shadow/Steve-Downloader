@@ -117,7 +117,7 @@ namespace steve_downloader
         public void download_progress_function(double ProgressPercentage, double BytesReceived, double TotalBytesToReceive, string context)
         {
             download_progressbar.Value = ProgressPercentage;
-            progressbar_text.Text = Convert.ToString(ProgressPercentage) + " %  " + SizeSuffixMb((long)Convert.ToDouble(BytesReceived)) +"MB / " + SizeSuffixMb((long)Convert.ToDouble(TotalBytesToReceive)) + context;
+            progressbar_text.Text = Convert.ToString(ProgressPercentage) + " %  " + SizeSuffixMb_Ram((long)Convert.ToDouble(BytesReceived)) +"MB / " + SizeSuffixMb_Ram((long)Convert.ToDouble(TotalBytesToReceive)) + context;
         }
 
         public void extract_file(string zip_path, string extract_path)
@@ -160,9 +160,17 @@ namespace steve_downloader
 
             return string.Format("{0:n1} {1}", adjustedSize, SizeSuffixes[mag]);
         }
-        static string SizeSuffixMb(Int64 value)
+        static string SizeSuffixMb_Ram(Int64 value)
         {
-            if (value < 0) { return "-" + SizeSuffixMb(-value); }
+            if (value < 0) { return "-" + SizeSuffixMb_Ram(-value); }
+            if (value == 0) { return "0.0 bytes"; }
+            int mag = (int)Math.Log(value, 1024);
+            decimal adjustedSize = (decimal)value / (1L << (mag * 10));
+            return string.Format("{0}", Math.Round(adjustedSize));
+        }   
+        static string SizeSuffixMb_Donwload(Int64 value)
+        {
+            if (value < 0) { return "-" + SizeSuffixMb_Donwload(-value); }
             if (value == 0) { return "0.0 bytes"; }
             int mag = (int)Math.Log(value, 1024);
             decimal adjustedSize = (decimal)value / (1L << (mag * 10));
@@ -264,7 +272,7 @@ namespace steve_downloader
                 foreach (ManagementObject result in results)
                 {
                     text_ram.Text = ": " + SizeSuffix((long)Convert.ToDouble(result["TotalVisibleMemorySize"]));
-                    ram_capable = SizeSuffixMb((long)Convert.ToDouble(result["TotalVisibleMemorySize"]));
+                    ram_capable = SizeSuffixMb_Donwload((long)Convert.ToDouble(result["TotalVisibleMemorySize"]));
 
                 }
                 //java information
@@ -438,7 +446,7 @@ namespace steve_downloader
             modlist.modlist skla = new modlist.modlist();
             skla.Owner = Application.Current.MainWindow;
             skla.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            /**
+            
             if (open_window_modlist == false)
             {
                 if (open_window_modlist_visiable == true)
@@ -452,7 +460,6 @@ namespace steve_downloader
                 open_window_modlist = false;
                 skla.Show();
             }
-    **/
         }
 
         private void checkbox_check()
@@ -530,16 +537,16 @@ namespace steve_downloader
                         profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
                         profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
                         profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
-                        profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2847";
+                        profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2854";
                         profiles_json["profiles"][modpack_title]["name"] = modpack_title;
                         profiles_json["profiles"][modpack_title]["type"] = "custom";
                     }
                     profiles_json["profiles"][modpack_title]["created"] = "2020-01-10T17:47:57.637Z";
                     profiles_json["profiles"][modpack_title]["gameDir"] = second.select_path + @"\" + modpack_title;
                     profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
-                    profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
+                    profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m";
                     profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
-                    profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2847";
+                    profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2854";
                     profiles_json["profiles"][modpack_title]["name"] = modpack_title;
                     profiles_json["profiles"][modpack_title]["type"] = "custom";
                     string convert_json = Convert.ToString(profiles_json);
@@ -618,7 +625,6 @@ namespace steve_downloader
     //압축 오버라이드
     public static class ZipArchiveExtensions
     {
-        public static int count;
         public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
         {
             if (!overwrite)
@@ -636,7 +642,6 @@ namespace steve_downloader
 
                 if (file.Name != "")
                     file.ExtractToFile(completeFileName, true);
-                count++;
             }
         }
     }
