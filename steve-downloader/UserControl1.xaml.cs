@@ -17,7 +17,6 @@ using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using steve_downloader;
 using steve_downloader.download;
-using Xamarin.Forms.Xaml;
 using System.Threading;
 using System.Net;
 

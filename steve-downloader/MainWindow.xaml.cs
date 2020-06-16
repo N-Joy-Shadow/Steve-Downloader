@@ -30,7 +30,7 @@ namespace steve_downloader
         public static bool open_window_path_visiable = true;
         public static bool open_window_modlist = true;
         public static bool open_window_modlist_visiable = true;
-        public static string ram_slide_value = "0";
+        public static string ram_slide_value = "4096";
         public static string ram_capable;
         public static string slider_value;
         public string json_test;
@@ -46,6 +46,7 @@ namespace steve_downloader
         public static int pro_total = 5;
         public static int process;
         public static bool bool_extract;
+
 
         public MainWindow()
         {
@@ -112,10 +113,7 @@ namespace steve_downloader
                 progressbar_text_text.Text = processed_context + " 압축푸는중...";
                 extract_file(mc_zip_path, mc_folder);
             }
-            
-
         }
-
         public void download_progress_function(double ProgressPercentage, double BytesReceived, double TotalBytesToReceive, string context)
         {
             download_progressbar.Value = ProgressPercentage;
@@ -124,19 +122,19 @@ namespace steve_downloader
 
         public void extract_file(string zip_path, string extract_path)
         {
-            try {
-            using (ZipArchive archive = ZipFile.Open(zip_path, ZipArchiveMode.Update))
-            {
-                ZipArchiveExtensions.ExtractToDirectory(archive, extract_path, true);
-            }
-            }
-            catch
-            {
-                MessageBox.Show("압축파일을 닫아 주세요.");
-            }
 
+            try
+            {
+                using (ZipArchive archive = ZipFile.Open(zip_path, ZipArchiveMode.Update))
+                {
+                    ZipArchiveExtensions.ExtractToDirectory(archive, extract_path, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                    MessageBox.Show("압축파일을 닫아 주세요  \n오류내용:"  + Convert.ToString(ex));
+            }
         }
-       
 
 
         public void open_path_bool()
@@ -397,11 +395,25 @@ namespace steve_downloader
             //json 파일을 이용하여 경로 재설정 예정
             if (File.Exists(Convert.ToString(jsonO["basic_path"])))
             {
+                try 
+                { 
                 Process.Start(Convert.ToString(jsonO["basic_path"]));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(Convert.ToString(ex));
+                }
             }
             else if (File.Exists(Convert.ToString(jsonO["selected_path"])))
             {
-                Process.Start(Convert.ToString(jsonO["selected_path"]));
+                try
+                {
+                    Process.Start(Convert.ToString(jsonO["selected_path"]));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(Convert.ToString(ex));
+                }
             }
             else
             {
@@ -426,6 +438,7 @@ namespace steve_downloader
             modlist.modlist skla = new modlist.modlist();
             skla.Owner = Application.Current.MainWindow;
             skla.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            /**
             if (open_window_modlist == false)
             {
                 if (open_window_modlist_visiable == true)
@@ -439,6 +452,7 @@ namespace steve_downloader
                 open_window_modlist = false;
                 skla.Show();
             }
+    **/
         }
 
         private void checkbox_check()
@@ -487,12 +501,12 @@ namespace steve_downloader
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex);
+                        MessageBox.Show(Convert.ToString(ex));
                     }
                     // 포지 다운및 압축풀기
-                    donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", current_folder + @"\minecraft_forge.zip", mc_forced_folder, @".\minecraft_forge.zip","포지", true);
+                    //donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", current_folder + @"\minecraft_forge.zip", mc_forced_folder, @".\minecraft_forge.zip","포지", true);
                     // 모드팩 다운및 압축풀기
-                    //donwload_function(@"Url", current_folder + @"\modpack.zip", second.select_path + @"\"+ modpack_title,@".\modpack.zip","모드팩", true);
+                    donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/1st_alphatest.zip", current_folder + @"\1st_alphatest.zip", second.select_path + @"\"+ modpack_title,@".\1st_alphatest.zip","모드팩", true);
                     if (modlist.modlist.optifine_check == true) 
                     {
                         donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.select_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar", null,null,"옵티파인", false);
@@ -532,7 +546,6 @@ namespace steve_downloader
                     File.WriteAllText(mc_forced_folder + @"\launcher_profiles.json", convert_json);
                     completed_counted();
                     return_downloading_file(true);
-                    progressbar_text_text.Text = "설치 끝";
                 }
                 else
                 {
@@ -544,28 +557,6 @@ namespace steve_downloader
                 MessageBox.Show("Setting에서 경로를 먼저 지정해 주세요", "Information");
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
     //램 설정
@@ -649,5 +640,4 @@ namespace steve_downloader
             }
         }
     }
- 
 }

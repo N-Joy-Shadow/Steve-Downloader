@@ -30,10 +30,10 @@
                         <Button x:Name="find_path" Width="60" Height="20" Click="find_path_Click">...</Button>
                     </StackPanel>
                 </Grid>
-                <!--
-                    <TextBlock Text="왼쪽 오른쪽 '...'을 눌러 경로를 선택해 주세요." FontSize="8" Margin=""/>
-                -->
-            </StackPanel>
+
+                    <TextBlock Text="왼쪽 오른쪽 '...'을 눌러 경로를 선택해 주세요." FontSize="10" Margin="5"/>
+                    <TextBlock Text="확인을 누른 후 런처에서 인스톨을 눌러 주세요" FontSize="10" Margin="5"/>
+                </StackPanel>
             <Grid Width="500" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
                         <Button x:Name="download_ok" Height="20" Width="60" Margin="4" FontSize="8" Click="download_ok_Click">확인</Button>

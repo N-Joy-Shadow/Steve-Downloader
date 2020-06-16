@@ -98,9 +98,9 @@
                     <TextBlock Text=" 공지" Foreground="black" FontSize="50"/>
                     <Grid Grid.Row="1" Margin="10">
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="- 응딩이" FontSize="22" Foreground="Gray" Margin="5"/>
-                            <TextBlock Text="- 응딩이" FontSize="22" Foreground="Gray" Margin="5"/>
-                            <TextBlock Text="- 응딩이" FontSize="22" Foreground="Gray" Margin="5"/>
+                            <TextBlock Text="- 개발 버전, 오류 발견시 biryeongtrain06@gmail.com 으로 제보" FontSize="22" Foreground="Gray" Margin="5"/>
+                            <TextBlock Text="- 런처에서 오류 발견시 shs37404132@gmail.com 으로 제보" FontSize="22" Foreground="Gray" Margin="5"/>
+                            <TextBlock Text="- 이 인스톨러도 베타 버전이므로 사용후 삭제 해도 됩니다" FontSize="22" Foreground="Gray" Margin="5"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -110,7 +110,7 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="1" Margin="10">
-                        <Slider  x:Name="ram_slider" TickFrequency="128" TickPlacement="TopLeft"  Value="512" Minimum="0" Maximum="1024" Orientation="Vertical"
+                        <Slider  x:Name="ram_slider" TickFrequency="128" TickPlacement="TopLeft"  Value="4096" Minimum="0" Maximum="4096" Orientation="Vertical"
                                  Foreground="#FF4A56A8" HorizontalAlignment="Center" BorderBrush="#00000000" ValueChanged="ram_slider_ValueChanged"/>
                     </Grid>
                     <Grid Grid.Column="0">
@@ -228,7 +228,7 @@
                 <Button Background="#FFD3D3D3" Style="{StaticResource TransparentStyle_gray}"   BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="email" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
-                        <TextBlock Text=" 완장에게 문의하기  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <TextBlock Text=" 문의(만드는중) " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20" TextDecorations="{x:Null}"/>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -236,7 +236,7 @@
                 <Button Background="#FFD3D3D3" Style="{StaticResource TransparentStyle_gray}"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Notebook" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
-                        <TextBlock Text=" 패치 노트  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <TextBlock Text=" 패치 노트(만드는중)  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -244,7 +244,7 @@
                 <Button x:Name="btn_modlist" Style="{StaticResource TransparentStyle_gray}"  Click="modlist_Click" Background="#FFD3D3D3"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Wrench" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
-                        <TextBlock Text=" 추가모드 및 설정 " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <TextBlock Text=" 추가모드 및 설정(취소) " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -252,7 +252,7 @@
                 <Button Background="#FFD3D3D3" Style="{StaticResource TransparentStyle_gray}"  BorderBrush="{x:Null}" Cursor="Hand" Height="81" Width="250">
                     <StackPanel Orientation="Horizontal" Height="81" Width="250">
                         <materialDesign:PackIcon Kind="Wikipedia" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Width="50" Height="50"/>
-                        <TextBlock Text=" 위키  " VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
+                        <TextBlock Text=" 위키(만드는중)" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Black" FontSize="20"/>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -275,7 +275,7 @@
                 <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FF4A56A8">
                     <Grid  Background="#FF4A56A8">
                         <ProgressBar Height="30" HorizontalAlignment="Left" Width="800" Margin="15,0" Value="0" Foreground="Lime" x:Name="download_progressbar"/>
-                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="0" Maximum="7" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC" x:Name="total_download_progressbar"/>
+                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="0" Maximum="7" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC" x:Name="total_download_progressbar" Foreground="#B206B025"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text"/>
                             <TextBlock Text="" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text_text"/>

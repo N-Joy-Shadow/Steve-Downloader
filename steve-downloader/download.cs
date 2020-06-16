@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using steve_downloader.second_window;
 using steve_downloader;
-using HtmlAgilityPack;
 using System.Net;
 
 namespace steve_downloader.download
