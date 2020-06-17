@@ -31,8 +31,9 @@
                     </StackPanel>
                 </Grid>
 
-                    <TextBlock Text="왼쪽 오른쪽 '...'을 눌러 경로를 선택해 주세요." FontSize="10" Margin="5"/>
-                    <TextBlock Text="확인을 누른 후 런처에서 인스톨을 눌러 주세요" FontSize="10" Margin="5"/>
+                    <TextBlock Text="왼쪽 오른쪽 '...'을 눌러 경로를 선택해 주세요." FontSize="12" Margin="5,5,5,1"/>
+                    <TextBlock Text="확인을 누른 후 런처에서 인스톨을 눌러 주세요" FontSize="12" Margin="5,1"/>
+                    <TextBlock x:Name="path_korean" Text="경로에 한글이 포함되면 안됩니다." FontSize="12" Margin="5,1"/>
                 </StackPanel>
             <Grid Width="500" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">

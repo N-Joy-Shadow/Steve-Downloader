@@ -56,7 +56,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="55"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="195"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -274,15 +274,15 @@
                 </Grid.RowDefinitions>
                 <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FF4A56A8">
                     <Grid  Background="#FF4A56A8">
-                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="800" Margin="15,0" Value="0" Foreground="#7F00FF00" x:Name="download_progressbar"/>
-                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="0" Maximum="7" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC" x:Name="total_download_progressbar" Foreground="#990FD39D"/>
+                        <ProgressBar Height="30" HorizontalAlignment="Left" Width="800" Margin="15,0" Value="0" Foreground="#CC046E04" x:Name="download_progressbar"/>
+                        <ProgressBar Height="32" HorizontalAlignment="Left" Width="800" Margin="15,15" Value="0" Maximum="7" Background="#00000000" VerticalAlignment="Center" BorderBrush="#FFBCBCBC" x:Name="total_download_progressbar" Foreground="#998BFF00"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text"/>
-                            <TextBlock Text="" VerticalAlignment="Bottom" Margin="15,0" Foreground="Black" x:Name="progressbar_text_text"/>
+                            <TextBlock Text="" VerticalAlignment="Center" Margin="20,0,15,0" Foreground="Black" FontSize="15" x:Name="total_download_text"/>
+                            <TextBlock Text="" VerticalAlignment="Center" Margin="10,0,15,0" Foreground="Black" x:Name="progressbar_text"/>
+                            <TextBlock Text="" VerticalAlignment="Center" Margin="10,0,15,0" Foreground="Black" x:Name="progressbar_text_text"/>
                         </StackPanel>
-                        <TextBlock Text="" VerticalAlignment="Center" Margin="20,0,15,0" Foreground="Black" FontSize="15" x:Name="total_download_text"/>
+                        
                     </Grid>
-
                     <Button x:Name="Install_Setting" FontSize="20" Width="110" Height="30" Click="Install_Setting_Click" Content="Setting"/>
                     <Button x:Name="Install_Start" FontSize="20" Width="110" Height="30" Click="Install_Start_Click" Content="Install" Margin="10"/>
                 </StackPanel>

@@ -24,6 +24,7 @@ namespace steve_downloader.second_window
 {
     public partial class second : Window
     {
+        public static string korean_check_path;
         public static string select_path;
         public static bool set_download_start = false;
         MainWindow askdl = new MainWindow();
@@ -61,11 +62,28 @@ namespace steve_downloader.second_window
 
         private void download_ok_Click(object sender, RoutedEventArgs e)
         {
+            int path_int = 0;
+            char[] asd = select_path.ToCharArray();
             if (paste_path.Text != "")
-            { 
-            this.Visibility = Visibility.Hidden;
-            askdl.open_path_bool();
-            setdownload();
+            {
+                for (int i = 0; i < select_path.Length; i++)
+                { 
+                    if (char.GetUnicodeCategory(asd[i]) == System.Globalization.UnicodeCategory.OtherLetter)
+                    {
+                        path_int++;
+                    }
+                }
+                if (path_int == 0)
+                {
+                    korean_check_path = select_path;
+                    this.Visibility = Visibility.Hidden;
+                    askdl.open_path_bool();
+                    setdownload();
+                }
+                else 
+                {
+                    path_korean.Foreground = Brushes.Red;
+                }
             }
         }
     }
