@@ -15,6 +15,7 @@ using System.IO;
 using Microsoft.Win32;
 using System.Net;
 using System.IO.Compression;
+using System.Windows.Media;
 
 namespace steve_downloader
 {
@@ -45,8 +46,6 @@ namespace steve_downloader
         public static string processed_context;
         public static int pro_total;
         public static int process;
-        public static bool bool_extract;
-
 
         public MainWindow()
         {
@@ -284,13 +283,13 @@ namespace steve_downloader
                 else if (ram_limit <= 8100 && ram_limit > 4100)
                 {
                     ram_slider.TickFrequency = 2048;
+
                 }
                 else
                 {
                     ram_slider.TickFrequency = 4096;
                 }
                 ram_rate.Text = " / " + ram_capable;
-
                 //for (int i = 0; i < 10; i++)
                 //{
                 //    ramCounter = new PerformanceCounter("Memory", "% Committed Bytes In Use");
@@ -346,7 +345,6 @@ namespace steve_downloader
         private void ram_slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Ram_slider_change(Convert.ToString(Math.Round(ram_slider.Value)));
-
         }
 
         void worker_cpu_DoWork(object sender, DoWorkEventArgs e)
@@ -501,12 +499,12 @@ namespace steve_downloader
                         MessageBox.Show(Convert.ToString(ex));
                     }
                     // 포지, 모드팩 다운
-                    donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/minecraft_forge.zip", @".\minecraft_forge.zip");
+                    donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/minecraft_forge.zip", @".\minecraft_forge.zip");
                     donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/1st_alphatest.zip", @".\1st_alphatest.zip");
 
                     if (modlist.modlist.optifine_check == true)
                     {
-                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.korean_check_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar");
+                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.korean_check_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar");                    
                     }
                     if (modlist.modlist.koreanchat_check == true)
                     {
@@ -579,7 +577,7 @@ namespace steve_downloader
                 profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
                 profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m";
                 profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
-                profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2854";
+                profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge-14.23.5.2854";
                 profiles_json["profiles"][modpack_title]["name"] = modpack_title;
                 profiles_json["profiles"][modpack_title]["type"] = "custom";
             }
@@ -588,12 +586,13 @@ namespace steve_downloader
             profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
             profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + ram_slide_value + "m";
             profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
-            profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge1.12.2-14.23.5.2854";
+            profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge-14.23.5.2854";
             profiles_json["profiles"][modpack_title]["name"] = modpack_title;
             profiles_json["profiles"][modpack_title]["type"] = "custom";
             string convert_json = Convert.ToString(profiles_json);
             File.WriteAllText(mc_forced_folder + @"\launcher_profiles.json", convert_json);
             return_downloading_file(true);
+            progressbar_text_text.Text = "설치끝!";
         }
 
         void Do_extract_zip_File(object sender, DoWorkEventArgs e)

@@ -111,7 +111,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="1" Margin="10">
                         <Slider  x:Name="ram_slider" TickFrequency="128" TickPlacement="TopLeft"  Value="4096" Minimum="0" Maximum="4096" Orientation="Vertical"
-                                 Foreground="#FF4A56A8" HorizontalAlignment="Center" BorderBrush="#00000000" ValueChanged="ram_slider_ValueChanged"/>
+                                 Foreground="#FF4A56A8" HorizontalAlignment="Center" BorderBrush="#00000000" ValueChanged="ram_slider_ValueChanged" IsMoveToPointEnabled="True"/>
                     </Grid>
                     <Grid Grid.Column="0">
                         <StackPanel>
@@ -283,7 +283,7 @@
                         </StackPanel>
                         
                     </Grid>
-                    <Button x:Name="Install_Setting" FontSize="20" Width="110" Height="30" Click="Install_Setting_Click" Content="Setting"/>
+                    <Button x:Name="Install_Setting" FontSize="20" Width="110" Height="30" Click="Install_Setting_Click" VerticalAlignment="Center" Content="Setting"/>
                     <Button x:Name="Install_Start" FontSize="20" Width="110" Height="30" Click="Install_Start_Click" Content="Install" Margin="10"/>
                 </StackPanel>
             </Grid>

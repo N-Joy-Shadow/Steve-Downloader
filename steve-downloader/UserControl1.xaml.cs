@@ -16,7 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using steve_downloader;
-using steve_downloader.download;
 using System.Threading;
 using System.Net;
 
