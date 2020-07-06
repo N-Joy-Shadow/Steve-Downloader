@@ -12,6 +12,8 @@ namespace steve_downloader
     /// <summary>
     /// App.xaml에 대한 상호 작용 논리
     /// </summary>
+    /// 
+
     public partial class App : Application
     {
         private static readonly ILog log = LogManager.GetLogger(typeof(App)); 

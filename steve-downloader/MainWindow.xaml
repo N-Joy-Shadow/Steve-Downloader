@@ -99,8 +99,8 @@
                     <Grid Grid.Row="1" Margin="10">
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="- 개발 버전, 오류 발견시 biryeongtrain06@gmail.com 으로 제보" FontSize="22" Foreground="Gray" Margin="5"/>
-                            <TextBlock Text="- 런처에서 오류 발견시 shs37404132@gmail.com 으로 제보" FontSize="22" Foreground="Gray" Margin="5"/>
-                            <TextBlock Text="- 이 인스톨러도 베타 버전이므로 사용후 삭제 해도 됩니다" FontSize="22" Foreground="Gray" Margin="5"/>
+                            <TextBlock Text="- 런처에서 압축을 풀때 런처가 렉이 걸리는 현상이 있지만" FontSize="22" Foreground="Gray" Margin="5"/>
+                            <TextBlock Text="- 압축이 끝나면 풀리니 런처를 끄지 마세요" FontSize="22" Foreground="Gray" Margin="5"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
