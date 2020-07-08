@@ -64,7 +64,7 @@ namespace steve_downloader
             downloading_file = value;
             return downloading_file;
         }
-
+        
 
         public int completed_counted()
         {
@@ -475,14 +475,37 @@ namespace steve_downloader
                     progressbar_text_text.Text = "";
                     pro_total = 2;
                     cmp_counted = 0;
-
+                    int check_forge = 0;
+                    string download_ptha = second.korean_check_path + @"\" + modpack_title;
+                    if (Directory.Exists(download_ptha))
+                    {
+                        try { 
+                        Directory.Delete(download_ptha + @"\mods", true);
+                        Directory.Delete(download_ptha + @"\addons", true);
+                        Directory.Delete(download_ptha + @"\config", true);
+                        Directory.Delete(download_ptha + @"\scripts", true);
+                        check_forge++;
+                        pro_total--;
+                        }
+                        catch
+                        {
+                            
+                        }
+                    }
                     //checkbox_check();
                     total_download_progressbar.Maximum = pro_total;
                     total_download_text.Text = "0 / " + pro_total;
 
 
                     BackgroundWorker Download_progress = new BackgroundWorker();
-                    Download_progress.DoWork += report_progress;
+                    if (pro_total == 2)
+                    {
+                        Download_progress.DoWork += report_progress2;
+                    }
+                    if (pro_total == 1)
+                    {
+                        Download_progress.DoWork += report_progress;
+                    }
                     Download_progress.ProgressChanged += Download_progress_progress_change;
                     Download_progress.WorkerReportsProgress = true;
                     Download_progress.RunWorkerCompleted += Download_progress_complete;
@@ -494,14 +517,17 @@ namespace steve_downloader
                     //폴더 만들기
                     try
                     {
-                        Directory.CreateDirectory(second.korean_check_path + @"\" + modpack_title);
+                        Directory.CreateDirectory(download_ptha);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(Convert.ToString(ex));
                     }
                     // 포지, 모드팩 다운
-                    donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/minecraft_forge.zip", @".\minecraft_forge.zip");
+                    if (check_forge != 1)
+                    {
+                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/minecraft_forge.zip", @".\minecraft_forge.zip");
+                    }
                     donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/1st_alphatest.zip", @".\1st_alphatest.zip");
 
                     if (modlist.modlist.optifine_check == true)
@@ -523,7 +549,7 @@ namespace steve_downloader
                 MessageBox.Show("Setting에서 경로를 먼저 지정해 주세요", "Information");
             }
         }
-        void report_progress(object sender, DoWorkEventArgs e)
+        void report_progress2(object sender, DoWorkEventArgs e)
         {
             for (; ; )
             {
@@ -531,6 +557,24 @@ namespace steve_downloader
                 Thread.Sleep(100);
                 (sender as BackgroundWorker).ReportProgress(cmp_counted);
                 if (cmp_counted == 2)
+                {
+                    break;
+                }
+                Thread.Sleep(100);
+                /**
+                
+                
+    **/
+            }
+        }
+        void report_progress(object sender, DoWorkEventArgs e)
+        {
+            for (; ; )
+            {
+                (sender as BackgroundWorker).ReportProgress(cmp_counted);
+                Thread.Sleep(100);
+                (sender as BackgroundWorker).ReportProgress(cmp_counted);
+                if (cmp_counted == 1)
                 {
                     break;
                 }
@@ -582,9 +626,10 @@ namespace steve_downloader
 
         void Do_extract_zip_File(object sender, DoWorkEventArgs e)
         {
-            Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(delegate
+            Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate
             {
                 progressbar_text_text.Text = "압축푸는중..";
+
                 if (File.Exists(@".\minecraft_forge.zip"))
                 {
                     using (ZipArchive archive = ZipFile.Open(@".\minecraft_forge.zip", ZipArchiveMode.Update))
