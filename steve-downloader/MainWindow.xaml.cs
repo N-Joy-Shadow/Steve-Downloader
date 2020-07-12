@@ -15,8 +15,8 @@ using System.IO;
 using Microsoft.Win32;
 using System.Net;
 using System.IO.Compression;
-using System.Windows.Media;
 using log4net;
+using System.Text.RegularExpressions;
 
 namespace steve_downloader
 {
@@ -291,6 +291,8 @@ namespace steve_downloader
                     ram_slider.TickFrequency = 4096;
                 }
                 ram_rate.Text = " / " + ram_capable;
+                ram_slider.Value = 4096;
+                ram_trans.Text = "4096";
                 //for (int i = 0; i < 10; i++)
                 //{
                 //    ramCounter = new PerformanceCounter("Memory", "% Committed Bytes In Use");
@@ -319,9 +321,7 @@ namespace steve_downloader
                 stream.Close();
 
             }
-
-
-
+            
             //컴퓨터 정보
             Thread t = new Thread(new ThreadStart(get_system_information));
             t.Start();
@@ -463,90 +463,100 @@ namespace steve_downloader
 
         private void Install_Start_Click(object sender, RoutedEventArgs e)
         {
-            if (second.set_download_start == true)
-            {
-                if (downloading_file == true)
+            if (ram_slider.Value != 0) { 
+                if (second.set_download_start == true)
                 {
-                    return_downloading_file(false);
-                    total_download_text.Text = "0 / 0";
-                    total_download_progressbar.Value = 0;
-                    download_progressbar.Value = 0;
-                    progressbar_text.Text = "";
-                    progressbar_text_text.Text = "";
-                    pro_total = 2;
-                    cmp_counted = 0;
-                    int check_forge = 0;
-                    string download_ptha = second.korean_check_path + @"\" + modpack_title;
-                    if (Directory.Exists(download_ptha))
+                    if (downloading_file == true)
                     {
-                        try { 
-                        Directory.Delete(download_ptha + @"\mods", true);
-                        Directory.Delete(download_ptha + @"\addons", true);
-                        Directory.Delete(download_ptha + @"\config", true);
-                        Directory.Delete(download_ptha + @"\scripts", true);
-                        check_forge++;
-                        pro_total--;
-                        }
-                        catch
+                        return_downloading_file(false);
+                        total_download_text.Text = "0 / 0";
+                        total_download_progressbar.Value = 0;
+                        download_progressbar.Value = 0;
+                        progressbar_text.Text = "";
+                        progressbar_text_text.Text = "";
+                        pro_total = 2;
+                        cmp_counted = 0;
+                        int check_forge = 0;
+                        string download_ptha = second.korean_check_path + @"\" + modpack_title;
+                        if (Directory.Exists(download_ptha))
                         {
+                            try { 
+                            Directory.Delete(download_ptha + @"\mods", true);
+                            Directory.Delete(download_ptha + @"\addons", true);
+                            Directory.Delete(download_ptha + @"\config", true);
+                            Directory.Delete(download_ptha + @"\resources", true);
+                            Directory.Delete(download_ptha + @"\ActualMusic", true);
+                            Directory.Delete(download_ptha + @"\scripts", true);
+                            check_forge++;
+                            pro_total--;
+                            }
+                            catch
+                            {
                             
+                            }
                         }
-                    }
-                    //checkbox_check();
-                    total_download_progressbar.Maximum = pro_total;
-                    total_download_text.Text = "0 / " + pro_total;
+                        //checkbox_check();
+                        total_download_progressbar.Maximum = pro_total;
+                        total_download_text.Text = "0 / " + pro_total;
 
 
-                    BackgroundWorker Download_progress = new BackgroundWorker();
-                    if (pro_total == 2)
-                    {
-                        Download_progress.DoWork += report_progress2;
-                    }
-                    if (pro_total == 1)
-                    {
-                        Download_progress.DoWork += report_progress;
-                    }
-                    Download_progress.ProgressChanged += Download_progress_progress_change;
-                    Download_progress.WorkerReportsProgress = true;
-                    Download_progress.RunWorkerCompleted += Download_progress_complete;
-                    Download_progress.RunWorkerAsync(1000);
+                        BackgroundWorker Download_progress = new BackgroundWorker();
+                        if (pro_total == 2)
+                        {
+                            Download_progress.DoWork += report_progress2;
+                        }
+                        if (pro_total == 1)
+                        {
+                            Download_progress.DoWork += report_progress;
+                        }
+                        Download_progress.ProgressChanged += Download_progress_progress_change;
+                        Download_progress.WorkerReportsProgress = true;
+                        Download_progress.RunWorkerCompleted += Download_progress_complete;
+                        Download_progress.RunWorkerAsync(1000);
 
 
 
 
-                    //폴더 만들기
-                    try
-                    {
-                        Directory.CreateDirectory(download_ptha);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(Convert.ToString(ex));
-                    }
-                    // 포지, 모드팩 다운
-                    if (check_forge != 1)
-                    {
-                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/minecraft_forge.zip", @".\minecraft_forge.zip");
-                    }
-                    donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/1st_alphatest.zip", @".\1st_alphatest.zip");
+                        //폴더 만들기
+                        try
+                        {
+                            Directory.CreateDirectory(download_ptha);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(Convert.ToString(ex));
+                        }
+                        // 포지, 모드팩 다운
+                        if (check_forge != 1)
+                        {
+                            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/minecraft_forge.zip", @".\minecraft_forge.zip");
+                        }
+                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/1st_alphatest.zip", @".\1st_alphatest.zip");
 
-                    if (modlist.modlist.optifine_check == true)
-                    {
-                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.korean_check_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar");
+                        if (modlist.modlist.optifine_check == true)
+                        {
+                            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.korean_check_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar");
+                        }
+                        if (modlist.modlist.koreanchat_check == true)
+                        {
+                            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar", second.korean_check_path + @"\" + modpack_title + @"\mods\koreanchat-creo-1.12-1.9.jar");
+                        }
+
+
                     }
-                    if (modlist.modlist.koreanchat_check == true)
+                    else
                     {
-                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar", second.korean_check_path + @"\" + modpack_title + @"\mods\koreanchat-creo-1.12-1.9.jar");
+                        MessageBox.Show("이미 다운로드가 진행중입니다.", "Information");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("이미 다운로드가 진행중입니다.", "Information");
+                    MessageBox.Show("Setting에서 경로를 먼저 지정해 주세요", "Information");
                 }
             }
             else
             {
-                MessageBox.Show("Setting에서 경로를 먼저 지정해 주세요", "Information");
+                MessageBox.Show("오른쪽 위에서 램 용량을 먼저 지정해 주세요", "Information");
             }
         }
         void report_progress2(object sender, DoWorkEventArgs e)
@@ -592,6 +602,14 @@ namespace steve_downloader
         }
 
 
+        void run_threading()
+        {
+            BackgroundWorker zip_extract_file = new BackgroundWorker();
+            zip_extract_file.DoWork += Do_extract_zip_File;
+            zip_extract_file.RunWorkerAsync(1000);
+        }
+
+
         void Download_progress_complete(object sender, AsyncCompletedEventArgs e)
         {
 
@@ -616,9 +634,7 @@ namespace steve_downloader
             profiles_json["profiles"][modpack_title]["type"] = "custom";
             string convert_json = Convert.ToString(profiles_json);
             File.WriteAllText(mc_forced_folder + @"\launcher_profiles.json", convert_json);
-            BackgroundWorker zip_extract_file = new BackgroundWorker();
-            zip_extract_file.DoWork += Do_extract_zip_File;
-            zip_extract_file.RunWorkerAsync(1000);
+            run_threading();
 
             progressbar_text_text.Text = "Json 설정완료!";
 
@@ -626,7 +642,7 @@ namespace steve_downloader
 
         void Do_extract_zip_File(object sender, DoWorkEventArgs e)
         {
-            Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate
+            Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(delegate
             {
                 progressbar_text_text.Text = "압축푸는중..";
 
@@ -647,14 +663,59 @@ namespace steve_downloader
                     File.Delete(@".\1st_alphatest.zip");
                 }
                 progressbar_text_text.Text = "설치끝!";
+                System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
+                notifyIcon.Icon = new System.Drawing.Icon(@"icon.ico");
+                notifyIcon.Visible = true;
+                notifyIcon.ShowBalloonTip(2000, "Steve Downloader", "설치 끝", System.Windows.Forms.ToolTipIcon.Info);
                 return_downloading_file(true);
             }));
 
         }
+        public static bool CheckNumber(string letter)
+        {
+            bool IsCheck = true;
+            Regex numRegex = new Regex(@"[0-9]");
+            Boolean ismatch = numRegex.IsMatch(letter);
+            if (!ismatch)
+            {
+                IsCheck = false;
+            }
+            return IsCheck;
+        }
+
+
+        private void ram_trans_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            if (CheckNumber(ram_trans.Text) == true)
+            {
+                if (ram_trans.Text == "")
+                {
+                    ram_slider.Value = 0;
+                }
+                else
+                {
+                    if(Convert.ToInt32(ram_trans.Text) < Convert.ToInt32(ram_capable)) 
+                    {
+                        ram_slider.Value = Convert.ToDouble(ram_trans.Text);
+                        ram_slide_value = ram_trans.Text;
+                        Ram_slider_change();
+                    }
+                    else 
+                    {
+                        ram_trans.Text = ram_capable;
+                        ram_slider.Value = Convert.ToDouble(ram_capable);
+                        ram_slide_value = ram_capable;
+                        Ram_slider_change();
+                    }
+                }
+            }
+            else
+            {
+                ram_slider.Value = 0;
+                ram_trans.Text = "";
+            }
+        }
     }
-
-
-
 
 
     //램 설정
@@ -703,6 +764,7 @@ namespace steve_downloader
                 if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
                 {
                     return Convert.ToInt64((pi.PhysicalTotal.ToInt64() * pi.PageSize.ToInt64() / 1048576));
+                
                 }
                 else
                 {
@@ -711,11 +773,4 @@ namespace steve_downloader
 
             }
         }
-
-
-    //압축 오버라이드
-    public static class ZipArchiveExtensions
-    {
-           
-    }
 }

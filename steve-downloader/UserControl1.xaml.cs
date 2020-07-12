@@ -83,6 +83,7 @@ namespace steve_downloader.second_window
                 {
                     path_korean.Foreground = Brushes.Red;
                 }
+
             }
         }
     }

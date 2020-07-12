@@ -122,8 +122,8 @@
                             <TextBlock Text="- 권장: 8192MB(8GB)" Margin="5" Foreground="Gray" FontSize="15"/>
                             <TextBlock Text="- 최소: 4096MB(4GB)" Margin="5" Foreground="Gray" FontSize="15"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Name="ram_trans" Text="{Binding Path=Value, StringFormat=#, ElementName=ram_slider}"  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
-                                <TextBlock x:Name="ram_rate" Text=" / 000 "  Margin="0,35,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
+                                <TextBox x:Name="ram_trans" Margin="0,25,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black" Background="{x:Null}" Text="{Binding Value, ElementName=ram_slider, StringFormat=#}" TextChanged="ram_trans_TextChanged_1"/>
+                                <TextBlock x:Name="ram_rate" Text=" / 000 "  Margin="0,25,0,0" FontSize="30" HorizontalAlignment="Center" Foreground="Black"/>
                             </StackPanel>
                             <TextBlock Text="MB" FontSize="14" Foreground="Black" HorizontalAlignment="Center"/>
                         </StackPanel>
@@ -281,7 +281,7 @@
                             <TextBlock Text="" VerticalAlignment="Center" Margin="10,0,15,0" Foreground="Black" x:Name="progressbar_text"/>
                             <TextBlock Text="" VerticalAlignment="Center" Margin="10,0,15,0" Foreground="Black" x:Name="progressbar_text_text"/>
                         </StackPanel>
-                        
+
                     </Grid>
                     <Button x:Name="Install_Setting" FontSize="20" Width="110" Height="30" Click="Install_Setting_Click" VerticalAlignment="Center" Content="Setting"/>
                     <Button x:Name="Install_Start" FontSize="20" Width="110" Height="30" Click="Install_Start_Click" Content="Install" Margin="10"/>
