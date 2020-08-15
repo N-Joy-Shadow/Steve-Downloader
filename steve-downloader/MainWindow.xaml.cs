@@ -17,6 +17,7 @@ using System.Net;
 using System.IO.Compression;
 using log4net;
 using System.Text.RegularExpressions;
+using NotifyVariable;
 
 namespace steve_downloader
 {
@@ -37,8 +38,8 @@ namespace steve_downloader
         public static string ram_capable;
         public static string slider_value;
         public string json_test;
-        public int cmp_counted = 0;
-
+        public int Download_Complete_Count = 0;
+        public int check_forge = 0;
         public string mc_forced_folder = @"C:\Users\" + Environment.UserName + @"\AppData\Roaming\.minecraft";
 
         public static bool downloading_file = true;
@@ -46,9 +47,10 @@ namespace steve_downloader
         public static string mc_zip_path;
         public static string mc_folder;
         public static string processed_context;
-        public static int pro_total;
+        public static int pro_total = 2;
         public static int process;
 
+        private BackgroundWorker main_work;
         public MainWindow()
         {
             InitializeComponent();
@@ -66,10 +68,10 @@ namespace steve_downloader
         }
         
 
-        public int completed_counted()
+        public int Download_Completed_Count()
         {
-            cmp_counted++;
-            return cmp_counted;
+            Download_Complete_Count++;
+            return Download_Complete_Count;
         }
 
         public static void ExtractToDirectory(ZipArchive archive, string destinationDirectoryName, bool overwrite)
@@ -98,30 +100,11 @@ namespace steve_downloader
             progressbar_text_text.Text = processed_context + " 설치중...";
             WebClient dl_mc = new WebClient();
             Uri uri_forge = new Uri(Uri);
-            dl_mc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgress);
-            dl_mc.DownloadFileCompleted += new AsyncCompletedEventHandler(download_complete);
-            dl_mc.DownloadFileAsync(uri_forge, donwload_path);
-
-        }
-
-
-        private void DownloadProgress(object sender, DownloadProgressChangedEventArgs e)
-        {
-            download_progress_function(e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive, "MB");
-
-        }
-
-        public void download_complete(object sender, AsyncCompletedEventArgs e)
-        {
+            dl_mc.DownloadFile(uri_forge, donwload_path);
+            //dl_mc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgress);
             download_progressbar.Value = 0;
-            completed_counted();
+            Download_Completed_Count();
         }
-        public void download_progress_function(double ProgressPercentage, double BytesReceived, double TotalBytesToReceive, string context)
-        {
-            download_progressbar.Value = ProgressPercentage;
-            progressbar_text.Text = Convert.ToString(ProgressPercentage) + " %  " + SizeSuffixMb_Ram((long)Convert.ToDouble(BytesReceived)) + "MB / " + SizeSuffixMb_Ram((long)Convert.ToDouble(TotalBytesToReceive)) + context;
-        }
-
 
         public void open_path_bool()
         {
@@ -234,7 +217,7 @@ namespace steve_downloader
         }
 
 
-
+        //CPU,RAM 사용량 얻기
         private void get_system_information()
         {
             Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(delegate
@@ -291,8 +274,6 @@ namespace steve_downloader
                     ram_slider.TickFrequency = 4096;
                 }
                 ram_rate.Text = " / " + ram_capable;
-                ram_slider.Value = 4096;
-                ram_trans.Text = "4096";
                 //for (int i = 0; i < 10; i++)
                 //{
                 //    ramCounter = new PerformanceCounter("Memory", "% Committed Bytes In Use");
@@ -474,10 +455,9 @@ namespace steve_downloader
                         download_progressbar.Value = 0;
                         progressbar_text.Text = "";
                         progressbar_text_text.Text = "";
-                        pro_total = 2;
-                        cmp_counted = 0;
-                        int check_forge = 0;
+                        
                         string download_ptha = second.korean_check_path + @"\" + modpack_title;
+                        /*
                         if (Directory.Exists(download_ptha))
                         {
                             try { 
@@ -495,25 +475,10 @@ namespace steve_downloader
                             
                             }
                         }
+                        */
                         //checkbox_check();
                         total_download_progressbar.Maximum = pro_total;
                         total_download_text.Text = "0 / " + pro_total;
-
-
-                        BackgroundWorker Download_progress = new BackgroundWorker();
-                        if (pro_total == 2)
-                        {
-                            Download_progress.DoWork += report_progress2;
-                        }
-                        if (pro_total == 1)
-                        {
-                            Download_progress.DoWork += report_progress;
-                        }
-                        Download_progress.ProgressChanged += Download_progress_progress_change;
-                        Download_progress.WorkerReportsProgress = true;
-                        Download_progress.RunWorkerCompleted += Download_progress_complete;
-                        Download_progress.RunWorkerAsync(1000);
-
 
 
 
@@ -527,22 +492,12 @@ namespace steve_downloader
                             MessageBox.Show(Convert.ToString(ex));
                         }
                         // 포지, 모드팩 다운
-                        if (check_forge != 1)
-                        {
-                            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/minecraft_forge.zip", @".\minecraft_forge.zip");
-                        }
-                        donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/1st_alphatest.zip", @".\1st_alphatest.zip");
-
-                        if (modlist.modlist.optifine_check == true)
-                        {
-                            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/OptiFine_1.12.2_HD_U_F5.jar", second.korean_check_path + @"\" + modpack_title + @"\mods\OptiFine_1.12.2_HD_U_F5.jar");
-                        }
-                        if (modlist.modlist.koreanchat_check == true)
-                        {
-                            donwload_function(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/03/koreanchat-creo-1.12-1.9.jar", second.korean_check_path + @"\" + modpack_title + @"\mods\koreanchat-creo-1.12-1.9.jar");
-                        }
-
-
+                        main_work = new BackgroundWorker();
+                        main_work.WorkerReportsProgress = true;
+                        main_work.DoWork += new DoWorkEventHandler(Main_Do_work);
+                        main_work.ProgressChanged += new ProgressChangedEventHandler(Main_Progress_Changed);
+                        main_work.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Main_Work_Completed);
+                        main_work.RunWorkerAsync(1000);
                     }
                     else
                     {
@@ -559,6 +514,99 @@ namespace steve_downloader
                 MessageBox.Show("오른쪽 위에서 램 용량을 먼저 지정해 주세요", "Information");
             }
         }
+        async void Main_Do_work(object sender, DoWorkEventArgs e)
+        {   
+            WebClient Download_forge = new WebClient();
+            Uri url_forge = new Uri("http://222.234.190.69/WordPress/wp-content/uploads/2020/06/minecraft_forge.zip");
+            Download_forge.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressChagedForge);
+            Download_forge.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompletedForge);
+            await Download_forge.DownloadFileTaskAsync(url_forge, @".\zip\minecraft_forge.zip");
+
+            WebClient Download_modpack = new WebClient();
+            Uri url_modpack = new Uri(@"http://222.234.190.69/WordPress/wp-content/uploads/2020/06/1st_alphatest.zip");
+            Download_modpack.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressChagedModpack);
+            await Download_modpack.DownloadFileTaskAsync(url_modpack, @".\zip\modpack.zip");
+            //다운로드 컴플리트 대신해 작용
+            Download_Completed_Count();
+            main_work.ReportProgress((Download_Completed_Count() * 100) / pro_total);
+        }
+        void DownloadProgressChagedForge(object sender,DownloadProgressChangedEventArgs e)
+        {
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate {
+                download_progressbar.Value = e.ProgressPercentage;
+                progressbar_text.Text = String.Format("{0}% {1}MB / {2}MB  포지 다운로드중..",
+                    Convert.ToString(e.ProgressPercentage),
+                    SizeSuffixMb_Ram((long)Convert.ToDouble(e.BytesReceived)),
+                    SizeSuffixMb_Ram((long)Convert.ToDouble(e.TotalBytesToReceive)));
+            }));
+        }        
+        void DownloadProgressChagedModpack(object sender,DownloadProgressChangedEventArgs e)
+        {
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate {
+                download_progressbar.Value = e.ProgressPercentage;
+                progressbar_text.Text = String.Format("{0}% {1}MB / {2}MB  모드팩 다운로드중..",
+                    Convert.ToString(e.ProgressPercentage), 
+                    SizeSuffixMb_Ram((long)Convert.ToDouble(e.BytesReceived)), 
+                    SizeSuffixMb_Ram((long)Convert.ToDouble(e.TotalBytesToReceive)));
+            }));
+        }
+        void DownloadCompletedForge(object sender, AsyncCompletedEventArgs e)
+        {
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate {
+                Download_Completed_Count();
+                main_work.ReportProgress((Download_Completed_Count() * 100) / pro_total);
+            }));
+        }      
+
+        void Main_Progress_Changed(object sender, ProgressChangedEventArgs e)
+        {
+            
+            total_download_text.Text = string.Format("{0} / {1}",e.ProgressPercentage, Convert.ToString(pro_total));
+
+        }
+        void Main_Work_Completed(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressbar_text_text.Text = "Json 설정중..";
+            string jsonUpdateFile1 = File.ReadAllText(mc_forced_folder + @"\launcher_profiles.json");
+            JObject profiles_json = JObject.Parse(jsonUpdateFile1);
+            try
+            {
+                var pjob = (JObject)profiles_json["profiles"];
+                pjob.Add(modpack_title, new JObject());
+            }
+            catch
+            {
+            }
+            profiles_json["profiles"][modpack_title]["created"] = "2020-01-10T17:47:57.637Z";
+            profiles_json["profiles"][modpack_title]["gameDir"] = second.korean_check_path + @"\" + modpack_title;
+            profiles_json["profiles"][modpack_title]["icon"] = "Furnace";
+            profiles_json["profiles"][modpack_title]["javaArgs"] = "-Xmx" + Ram_slider_change() + "m";
+            profiles_json["profiles"][modpack_title]["lastUsed"] = "2020-01-10T17:47:57.637Z";
+            profiles_json["profiles"][modpack_title]["lastVersionId"] = "1.12.2-forge-14.23.5.2854";
+            profiles_json["profiles"][modpack_title]["name"] = modpack_title;
+            profiles_json["profiles"][modpack_title]["type"] = "custom";
+            string convert_json = Convert.ToString(profiles_json);
+            File.WriteAllText(mc_forced_folder + @"\launcher_profiles.json", convert_json);
+            //run_threading();
+
+            progressbar_text_text.Text = "Json 설정완료!";
+
+            progressbar_text.Text = "설치끝!";
+            System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
+            notifyIcon.Icon = new System.Drawing.Icon(@"icon.ico");
+            notifyIcon.Visible = true;
+            notifyIcon.ShowBalloonTip(2000, "Steve Downloader", "설치 끝", System.Windows.Forms.ToolTipIcon.Info);
+            return_downloading_file(true);
+        }
+
+
+        /*
+        private void DownloadProgress(object sender, DownloadProgressChangedEventArgs e)
+        {
+            download_progress_function(e.ProgressPercentage, e.BytesReceived, e.TotalBytesToReceive, "MB");
+
+        }*/
+        /*
         void report_progress2(object sender, DoWorkEventArgs e)
         {
             for (; ; )
@@ -571,10 +619,6 @@ namespace steve_downloader
                     break;
                 }
                 Thread.Sleep(100);
-                /**
-                
-                
-    **/
             }
         }
         void report_progress(object sender, DoWorkEventArgs e)
@@ -589,12 +633,9 @@ namespace steve_downloader
                     break;
                 }
                 Thread.Sleep(100);
-                /**
-                
-                
-    **/
             }
         }
+        */
         void Download_progress_progress_change(object sender, ProgressChangedEventArgs e)
         {
             total_download_progressbar.Value = e.ProgressPercentage;
@@ -634,7 +675,7 @@ namespace steve_downloader
             profiles_json["profiles"][modpack_title]["type"] = "custom";
             string convert_json = Convert.ToString(profiles_json);
             File.WriteAllText(mc_forced_folder + @"\launcher_profiles.json", convert_json);
-            run_threading();
+            //run_threading();
 
             progressbar_text_text.Text = "Json 설정완료!";
 
@@ -662,7 +703,7 @@ namespace steve_downloader
                     }
                     File.Delete(@".\1st_alphatest.zip");
                 }
-                progressbar_text_text.Text = "설치끝!";
+                progressbar_text.Text = "설치끝!";
                 System.Windows.Forms.NotifyIcon notifyIcon = new System.Windows.Forms.NotifyIcon();
                 notifyIcon.Icon = new System.Drawing.Icon(@"icon.ico");
                 notifyIcon.Visible = true;
@@ -671,6 +712,7 @@ namespace steve_downloader
             }));
 
         }
+        /*
         public static bool CheckNumber(string letter)
         {
             bool IsCheck = true;
@@ -682,11 +724,11 @@ namespace steve_downloader
             }
             return IsCheck;
         }
-
+        */
 
         private void ram_trans_TextChanged_1(object sender, TextChangedEventArgs e)
         {
-            if (CheckNumber(ram_trans.Text) == true)
+            if (ram_trans.Text != "")
             {
                 if (ram_trans.Text == "")
                 {
@@ -694,13 +736,13 @@ namespace steve_downloader
                 }
                 else
                 {
-                    if(Convert.ToInt32(ram_trans.Text) < Convert.ToInt32(ram_capable)) 
+                    if (Convert.ToInt32(ram_trans.Text) < Convert.ToInt32(ram_capable))
                     {
                         ram_slider.Value = Convert.ToDouble(ram_trans.Text);
                         ram_slide_value = ram_trans.Text;
                         Ram_slider_change();
                     }
-                    else 
+                    else
                     {
                         ram_trans.Text = ram_capable;
                         ram_slider.Value = Convert.ToDouble(ram_capable);
@@ -717,60 +759,70 @@ namespace steve_downloader
         }
     }
 
-
-    //램 설정
-    public static class PerformanceInfo
-        {
-            [DllImport("psapi.dll", SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool GetPerformanceInfo([Out] out PerformanceInformation PerformanceInformation, [In] int Size);
-
-            [StructLayout(LayoutKind.Sequential)]
-            public struct PerformanceInformation
-            {
-                public int Size;
-                public IntPtr CommitTotal;
-                public IntPtr CommitLimit;
-                public IntPtr CommitPeak;
-                public IntPtr PhysicalTotal;
-                public IntPtr PhysicalAvailable;
-                public IntPtr SystemCache;
-                public IntPtr KernelTotal;
-                public IntPtr KernelPaged;
-                public IntPtr KernelNonPaged;
-                public IntPtr PageSize;
-                public int HandlesCount;
-                public int ProcessCount;
-                public int ThreadCount;
-            }
-
-            public static Int64 GetPhysicalAvailableMemoryInMiB()
-            {
-                PerformanceInformation pi = new PerformanceInformation();
-                if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
-                {
-                    return Convert.ToInt64((pi.PhysicalAvailable.ToInt64() * pi.PageSize.ToInt64() / 1048576));
-                }
-                else
-                {
-                    return -1;
-                }
-
-            }
-
-            public static Int64 GetTotalMemoryInMiB()
-            {
-                PerformanceInformation pi = new PerformanceInformation();
-                if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
-                {
-                    return Convert.ToInt64((pi.PhysicalTotal.ToInt64() * pi.PageSize.ToInt64() / 1048576));
-                
-                }
-                else
-                {
-                    return -1;
-                }
-
-            }
-        }
 }
+
+
+//램 설정
+public static class PerformanceInfo
+{
+    [DllImport("psapi.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetPerformanceInfo([Out] out PerformanceInformation PerformanceInformation, [In] int Size);
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PerformanceInformation
+    {
+        public int Size;
+        public IntPtr CommitTotal;
+        public IntPtr CommitLimit;
+        public IntPtr CommitPeak;
+        public IntPtr PhysicalTotal;
+        public IntPtr PhysicalAvailable;
+        public IntPtr SystemCache;
+        public IntPtr KernelTotal;
+        public IntPtr KernelPaged;
+        public IntPtr KernelNonPaged;
+        public IntPtr PageSize;
+        public int HandlesCount;
+        public int ProcessCount;
+        public int ThreadCount;
+    }
+
+    public static Int64 GetPhysicalAvailableMemoryInMiB()
+    {
+        PerformanceInformation pi = new PerformanceInformation();
+        if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
+        {
+            return Convert.ToInt64((pi.PhysicalAvailable.ToInt64() * pi.PageSize.ToInt64() / 1048576));
+        }
+        else
+        {
+            return -1;
+        }
+
+    }
+
+    public static Int64 GetTotalMemoryInMiB()
+    {
+        PerformanceInformation pi = new PerformanceInformation();
+        if (GetPerformanceInfo(out pi, Marshal.SizeOf(pi)))
+        {
+            return Convert.ToInt64((pi.PhysicalTotal.ToInt64() * pi.PageSize.ToInt64() / 1048576));
+
+        }
+        else
+        {
+            return -1;
+        }
+
+    }
+}
+
+
+
+
+
+
+
+
+
